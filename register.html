@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="loader">⏳ Creating Account...</div>
+
+<header>🎮 SONI ESPORTS Registration</header>
+
+<h2>Create Account</h2>
+
+<form id="form">
+
+  <input type="text" id="name" placeholder="Full Name" required><br><br>
+
+  <input type="email" id="email" placeholder="Email" required><br><br>
+
+  <input type="password" id="password" placeholder="Password" required><br><br>
+
+  <input type="text" id="uid" placeholder="Free Fire UID" required><br><br>
+   
+  <label>
+    <input type="checkbox" id="terms" required> I agree to the Terms and Conditions
+  </label>
+  <br><br>
+
+  <button type="submit" onclick="registerUser()">Register</button>
+
+  <p>Already have an account? <a href="login.html">Login here</a></p>
+
+</form>
+
+<p id="msg"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
+);
+
+async function registerUser() {
+
+  // show loader
+  document.getElementById("loader").style.display = "flex";
+  document.getElementById("form").style.display = "none";
+
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+  let uid = document.getElementById("uid").value;
+
+  try {
+    // 🔐 Create account
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password
+    });
+
+    if (error) throw error;
+
+    if (!data.user) {
+      throw new Error("Account not created (check email verification)");
+    }
+
+    // 🧾 Save extra data
+    const { data, error } = await supabaseClient.auth.signUp({
+  email: email,
+  password: password,
+  options: {
+    emailRedirectTo: "http://localhost:5500/home.html"
+  }
+});
+      [{
+const user=data.user;
+        id= user.id,
+        name: name,
+        email: email,
+        uid: uid,
+        coins: 100,
+        banned: false,
+        is_admin: false
+      }
+  }];
+
+    if (dbError) throw dbError;
+
+    // ✅ Success
+    document.getElementById("loader").innerText = "✅ Registration Successful";
+
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 1500);
+
+  } catch (err) {
+    // ❌ Error
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("form").style.display = "block";
+
+    document.getElementById("msg").innerText = "❌ " + err.message;
+  }
+  let agree = document.getElementById("terms").checked;
+  if (!agree) {
+    alert("You must agree to the terms and conditions");
+    return;
+  }
+  
+}
+</script>
+
+</body>
+</html>
