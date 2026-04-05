@@ -1,0 +1,240 @@
+{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Orbitron', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0d0d0d, #000000);
+  color: white;
+  min-height: 100vh;
+}
+header {
+  text-align: center;
+  padding: 15px;
+  font-size: 22px;
+  color: #00ffcc;
+  background: rgba(0,0,0,0.7);
+  border-bottom: 2px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+}
+h1, h2 {
+  text-align: center;
+  color: #00ffcc;
+  text-shadow: 0 0 15px #00ffcc;
+  margin: 20px 0;
+}
+form, #form, .user-card, .container {
+  width: 350px;
+  margin: 40px auto;
+  padding: 25px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  box-shadow: 0 0 25px #00ffcc;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #00ffcc;
+  border-radius: 6px;
+  background: #111;
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  box-shadow: 0 0 10px #00ffcc;
+  border-color: #00ffcc;
+}
+button, .btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  color: black;
+  background: linear-gradient(45deg, #00ffcc, #0066ff);
+  box-shadow: 0 0 15px #00ffcc;
+  transition: 0.3s;
+}
+
+button:hover, .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #00ffcc, 0 0 40px #0066ff;
+}
+p, #msg {
+  margin-top: 10px;
+  font-size: 13px;
+  color: red;
+}
+#loader {
+display: none;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  font-size: 18px;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+a.btn {
+  width: 200px;
+  display: inline-block;
+  margin: 10px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto 80px auto;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid #00ffcc;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffcc;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #00ffcc, 0 0 40px #0066ff;
+}
+.user-card {
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00ffcc;
+  text-align: center;
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  background: rgba(0,0,0,0.85);
+  border-top: 2px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+}
+
+.nav-item {
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-item:hover {
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+.play-btn {
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(45deg, #00ffcc, #0066ff);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+align-items: center;
+  font-size: 22px;
+  color: black;
+  box-shadow: 0 0 25px #00ffcc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.play-btn:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 35px #00ffcc;
+}
+footer {
+  text-align: center;
+  padding: 10px;
+  border-top: 2px solid #00ffcc;
+  color: #aaa;
+  box-shadow: 0 0 10px #00ffcc;
+}
+@media (max-width: 600px) {
+
+  / Form full width /
+  #form {
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  / Inputs proper size /
+  input {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  / Buttons full width /
+  button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  / Home container fix /
+  .home-container {
+    padding: 10px;
+  }
+
+  / Coin box fix /
+  .coin-box {
+    margin: 10px;
+    font-size: 16px;
+  }
+
+  / Bottom menu fix /
+  .bottom-menu {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  / Menu buttons /
+  .menu-btn {
+    font-size: 12px;
+    min-width: 60px;
+  }
+
+  / Play button center */
+  .play-btn {
+    padding: 12px;
+    font-size: 14px;
+    transform: translateY(-10px);
+  }
+
+}
