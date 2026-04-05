@@ -37,7 +37,20 @@ const form = document.getElementById("registerForm");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  let password = document.getElementById("password").value;
+let confirmPassword = document.getElementById("confirmPassword").value;
 
+if (password !== confirmPassword) {
+  alert("Password not match ❌");
+  return;
+}
+
+let terms = document.getElementById("terms").checked;
+
+if (!terms) {
+  alert("Accept Terms & Conditions ⚠️");
+  return;
+}
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
