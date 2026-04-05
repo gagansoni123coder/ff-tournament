@@ -28,11 +28,20 @@
 
   <!-- Buttons -->
   <div class="actions">
+    <button class="edit-btn" onclick="openEdit()">Edit Profile ✏️</button>
     <button class="deposit" onclick="deposit()">Deposit 💰</button>
     <button class="withdraw" onclick="withdraw()">Withdraw 💸</button>
   </div>
 
   <button class="logout" onclick="logout()">Logout 🚪</button>
+
+</div>
+  <div id="editForm" style="display:none; margin-top:15px;">
+
+  <input type="text" id="editName" placeholder="New Name">
+  <input type="text" id="editUID" placeholder="New UID">
+
+  <button onclick="saveProfile()">Save 💾</button>
 
 </div>
 
@@ -67,6 +76,43 @@ async function loadProfile() {
   document.getElementById("name").innerText = data.name;
   document.getElementById("uid").innerText = data.uid;
   document.getElementById("coins").innerText = data.coins;
+}
+  function openEdit() {
+  document.getElementById("editForm").style.display = "block";
+}
+
+async function saveProfile() {
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  let newName = document.getElementById("editName").value;
+  let newUID = document.getElementById("editUID").value;
+
+  if (!newName || !newUID) {
+    alert("Fill all fields");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("users")
+    .update({
+      name: newName,
+      uid: newUID
+    })
+    .eq("id", user.id);
+
+  if (error) {
+    alert("Update failed");
+    return;
+  }
+
+  alert("Profile Updated ✅");
+
+  // UI update instantly
+  document.getElementById("name").innerText = newName;
+  document.getElementById("uid").innerText = newUID;
+
+  document.getElementById("editForm").style.display = "none";
 }
 
 function deposit() {
