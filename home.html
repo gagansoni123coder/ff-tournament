@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<header>🔥 SONIE ESPORTS DASHBOARD</header>
+
+<div class="user-card">
+  <h2>Welcome Player 🎮</h2>
+  <p>Coins: <span id="coins">0</span></p>
+</div>
+
+<div class="grid">
+
+  <div class="card">🏆<br>Tournaments</div>
+  <div class="card">⚔<br>1v1 Battle</div>
+  <div class="card">🎁<br>Rewards</div>
+  <div class="card">💰<br>Wallet</div>
+
+  <div class="card">📜<br>History</div>
+  <div class="card">👥<br>Teams</div>
+  <div class="card">📊<br>Leaderboard</div>
+  <div class="card">🎮<br>Games</div>
+
+  <div class="card">🔔<br>Notifications</div>
+  <div class="card">💬<br>Chat</div>
+  <div class="card">⚙<br>Settings</div>
+  <div class="card">👤<br>Profile</div>
+
+</div>
+
+<div class="bottom-nav">
+
+  <a href="home.html">🏠<br>Home</a>
+  <div class="nav-item">📜<br>History</div>
+
+  <div class="play-btn">▶</div>
+
+  <a href="profile.html">👤<br>Profile</a>
+  <div class="nav-item">⚙<br>Settings</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabase = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
+);
+</script>
+<h2>Coins: <span id="coins"></span></h2>
+
+<script>
+let user = JSON.parse(localStorage.getItem("user"));
+
+document.getElementById("coins").innerText = user.coins;
+
+if (user.banned) {
+  alert("You are banned 🚫");
+  window.location.href = "index.html";
+}
+</script>
+<script>
+const supabase = supabase.createClient("https://ggkqsfkxmmusrmczoyuk.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI");
+
+async function checkUser() {
+  const { data } = await supabase.auth.getUser();
+
+  if (!data.user) {
+    window.location.href = "login.html";
+  }
+}
+
+checkUser();
+</script>
+<script>
+const supabase = supabase.createClient("YOUR_URL", "YOUR_ANON_KEY");
+
+async function checkBan() {
+  const { data: userData } = await supabase.auth.getUser();
+
+  const { data } = await supabase
+    .from("users")
+    .select("banned")
+    .eq("id", userData.user.id)
+    .single();
+
+  if (data.banned) {
+    alert("You are banned 🚫");
+    window.location.href = "index.html";
+  }
+}
+
+checkBan();
+
+async function loadUser() {
+  const { data: auth } = await supabaseClient.auth.getUser();
+
+  if (!auth.user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const userId = auth.user.id;
+
+  const { data } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  document.getElementById("coins").innerText = data.coins;
+}
+
+loadUser();
+</script>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<header>⚙ Admin Panel</header>
+
+<h2>All Users</h2>
+
+<div id="users"></div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabase = supabase.createClient("https://ggkqsfkxmmusrmczoyuk.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI");
+
+// 🔐 Check admin
+async function checkAdmin() {
+  const { data: userData } = await supabase.auth.getUser();
+
+  if (!userData.user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data } = await supabase
+    .from("users")
+    .select("")
+    .eq("id", userData.user.id)
+    .single();
+
+  if (!data.is_admin) {
+    alert("Access Denied ❌");
+    window.location.href = "home.html";
+  }
+}
+
+checkAdmin();
+
+// 👥 Load users
+async function loadUsers() {
+  const { data, error } = await supabase.from("users").select("");
+
+  let html = "";
+
+  data.forEach(user => {
+    html += 
+      <div style="border:1px solid white; margin:10px; padding:10px;">
+        <p>Name: ${user.name}</p>
+        <p>Email: ${user.email}</p>
+        <p>Coins: ${user.coins}</p>
+        
+        <button onclick="addCoins('${user.id}')">+50 Coins</button>
+        <button onclick="removeCoins('${user.id}')">-20 Coins</button>
+        <button onclick="banUser('${user.id}')">Ban 🚫</button>
+        <button onclick="unbanUser('${user.id}')">Unban ✅</button>
+      </div>
+    ;
+  });
+
+  document.getElementById("users").innerHTML = html;
+}
+
+loadUsers();
+
+// 💰 Add coins
+async function addCoins(id) {
+  const { data } = await supabase.from("users").select("coins").eq("id", id).single();
+
+  await supabase.from("users")
+    .update({ coins: data.coins + 50 })
+    .eq("id", id);
+
+  loadUsers();
+}
+
+// ❌ Remove coins
+async function removeCoins(id) {
+  const { data } = await supabase.from("users").select("coins").eq("id", id).single();
+
+  await supabase.from("users")
+    .update({ coins: data.coins - 20 })
+    .eq("id", id);
+
+  loadUsers();
+}
+
+// 🚫 Ban
+async function banUser(id) {
+  await supabase.from("users")
+    .update({ banned: true })
+    .eq("id", id);
+
+  loadUsers();
+}
+
+// ✅ Unban
+async function unbanUser(id) {
+  await supabase.from("users")
+    .update({ banned: false })
+    .eq("id", id);
+
+  loadUsers();
+}
+</script>
+
+</html>
