@@ -236,5 +236,73 @@ footer {
     font-size: 14px;
     transform: translateY(-10px);
   }
-
 }
+ .profile-card {
+  max-width: 350px;
+  margin: 40px auto;
+  padding: 20px;
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,255,255,0.3);
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 3px solid cyan;
+}
+
+.profile-card h2 {
+  margin: 10px 0;
+}
+
+.uid {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.coins-box {
+  margin: 15px 0;
+  padding: 10px;
+  background: #020617;
+  border-radius: 10px;
+  font-size: 18px;
+  color: gold;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.deposit {
+  background: green;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  width: 48%;
+}
+
+.withdraw {
+  background: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  width: 48%;
+}
+
+.logout {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: orange;
+  border: none;
+  border-radius: 8px;
+}
+
