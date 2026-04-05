@@ -1,29 +1,89 @@
-<h2>My Profile</h2>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+  <link rel="stylesheet" href="/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-<head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body>
 
-<p>Name: <span id="name"></span></p>
-<p>Email: <span id="email"></span></p>
-<p>UID: <span id="uid"></span></p>
-<p>Coins: <span id="coins"></span></p>
+<header>🎮 Player Profile</header>
+
+<div class="profile-card">
+
+  <!-- Avatar -->
+  <img src="https://i.ibb.co/4pDNDk1/avatar.png" class="avatar">
+
+  <!-- Name -->
+  <h2 id="name">Loading...</h2>
+
+  <!-- UID -->
+  <p class="uid">🎮 UID: <span id="uid"></span></p>
+
+  <!-- Coins -->
+  <div class="coins-box">
+    🪙 Coins: <span id="coins"></span>
+  </div>
+
+  <!-- Buttons -->
+  <div class="actions">
+    <button class="deposit" onclick="deposit()">Deposit 💰</button>
+    <button class="withdraw" onclick="withdraw()">Withdraw 💸</button>
+  </div>
+
+  <button class="logout" onclick="logout()">Logout 🚪</button>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
+const supabaseClient = supabase.createClient(
+  "YOUR_URL",
+  "YOUR_ANON_KEY"
+);
+
 async function loadProfile() {
-  const { data: auth } = await supabase.auth.getUser();
 
-  const userId = auth.user.id;
+  const { data: { user } } = await supabaseClient.auth.getUser();
 
-  const { data } = await supabase
-    .from("profiles")
+  if (!user) {
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("users")
     .select("*")
-    .eq("id", userId)
+    .eq("id", user.id)
     .single();
 
+  if (error) {
+    alert("Error loading profile");
+    return;
+  }
+
   document.getElementById("name").innerText = data.name;
-  document.getElementById("email").innerText = data.email;
   document.getElementById("uid").innerText = data.uid;
   document.getElementById("coins").innerText = data.coins;
 }
 
+function deposit() {
+  alert("Deposit feature coming soon 💰");
+}
+
+function withdraw() {
+  alert("Withdraw feature coming soon 💸");
+}
+
+async function logout() {
+  await supabaseClient.auth.signOut();
+  window.location.href = "/login.html";
+}
+
 loadProfile();
 </script>
+
+</body>
+</html>
