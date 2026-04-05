@@ -305,4 +305,20 @@ footer {
   border: none;
   border-radius: 8px;
 }
+.edit-btn {
+  margin-top: 10px;
+  padding: 8px;
+  background: #00ffff;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+}
+
+#editForm input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 6px;
+  border: none;
+}
 
