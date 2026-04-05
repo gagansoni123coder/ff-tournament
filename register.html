@@ -51,7 +51,14 @@ form.addEventListener("submit", async (e) => {
     alert("Registration successful 🔥 Check email or login");
     window.location.href = "login.html";
   }
-});
+  await supabaseClient.from("users").insert([
+  {
+    id: user.id,
+    name: name,
+    email: email,
+    uid: uid
+  }
+]);
 </script>
 
 </body>
