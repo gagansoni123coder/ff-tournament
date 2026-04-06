@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wallet</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<div class="wallet-container">
+
+  <!-- TOP -->
+  <h2>💼 My Wallet</h2>
+
+  <!-- COINS -->
+  <div class="coins-card">
+    <h1 id="coins">0</h1>
+    <p>Total Coins</p>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="wallet-buttons">
+    <button onclick="deposit()">💰 Deposit</button>
+    <button onclick="withdraw()">💸 Withdraw</button>
+  </div>
+
+</div>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://your_url.supabase.co/",
+  "YOUR_ANON_KEY"
+);
+
+// load coins
+async function loadCoins() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  let { data } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("id", user.id)
+    .single();
+
+  document.getElementById("coins").innerText = data?.coins || 0;
+}
+
+loadCoins();
+
+// deposit
+function deposit() {
+  let amount = prompt("Enter deposit amount:");
+  if (!amount) return alert("Enter amount!");
+
+  alert("Deposit request sent (admin approval pending) ✅");
+}
+
+// withdraw
+function withdraw() {
+  let amount = prompt("Enter withdraw amount:");
+  if (!amount) return alert("Enter amount!");
+
+  alert("Withdraw request sent (admin approval pending) ✅");
+}
+</script>
+
+</body>
+</html>
