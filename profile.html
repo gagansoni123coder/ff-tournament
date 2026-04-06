@@ -2,133 +2,88 @@
 <html>
 <head>
   <title>Profile</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<header>🎮 Player Profile</header>
+<div class="profile-container">
 
-<div class="profile-card">
+  <!-- Top -->
+  <div class="top-bar">
+    <h2>👋 Welcome</h2>
+    <div class="coins-box">💰 0</div>
+  </div>
 
   <!-- Avatar -->
-  <img src="https://i.ibb.co/4pDNDk1/avatar.png" class="avatar">
-
-  <!-- Name -->
-  <h2 id="name">Loading...</h2>
-
-  <!-- UID -->
-  <p class="uid">🎮 UID: <span id="uid"></span></p>
-
-  <!-- Coins -->
-  <div class="coins-box">
-    🪙 Coins: <span id="coins"></span>
+  <div class="profile-header">
+    <img src="https://i.pravatar.cc/150" class="avatar">
+    <h2 id="name">Loading...</h2>
+    <p id="uid">UID: ---</p>
   </div>
 
-  <!-- Buttons -->
-  <div class="actions">
-    <button class="edit-btn" onclick="openEdit()">Edit Profile ✏️</button>
-    <button class="deposit" onclick="deposit()">Deposit 💰</button>
-    <button class="withdraw" onclick="withdraw()">Withdraw 💸</button>
+  <!-- Stats -->
+  <div class="stats">
+    <div>
+      <h3>0</h3>
+      <p>Matches</p>
+    </div>
+    <div>
+      <h3>0</h3>
+      <p>Kills</p>
+    </div>
+    <div>
+      <h3>0</h3>
+      <p>Coins</p>
+    </div>
   </div>
 
-  <button class="logout" onclick="logout()">Logout 🚪</button>
+  <!-- Menu -->
+  <div class="menu">
+    <div class="menu-item">👤 My Profile</div>
+    <div class="menu-item">💼 Wallet</div>
+    <div class="menu-item">🎮 My Matches</div>
+    <div class="menu-item">🏆 Leaderboard</div>
+    <div class="menu-item">🎁 Rewards</div>
+    <div class="menu-item">📢 Announcement</div>
+    <div class="menu-item">⚙ Settings</div>
+    <div class="menu-item logout" onclick="logout()">🚪 Logout</div>
+  </div>
 
 </div>
-  <div id="editForm" style="display:none; margin-top:15px;">
 
-  <input type="text" id="editName" placeholder="New Name">
-  <input type="text" id="editUID" placeholder="New UID">
-
-  <button onclick="saveProfile()">Save 💾</button>
-
-</div>
-
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 const supabaseClient = supabase.createClient(
-  "YOUR_URL",
-  "YOUR_ANON_KEY"
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
+// user data load
 async function loadProfile() {
-
   const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
     return;
   }
 
-  const { data, error } = await supabaseClient
-    .from("users")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    alert("Error loading profile");
-    return;
-  }
-
-  document.getElementById("name").innerText = data.name;
-  document.getElementById("uid").innerText = data.uid;
-  document.getElementById("coins").innerText = data.coins;
-}
-  function openEdit() {
-  document.getElementById("editForm").style.display = "block";
-}
-
-async function saveProfile() {
-
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  let newName = document.getElementById("editName").value;
-  let newUID = document.getElementById("editUID").value;
-
-  if (!newName || !newUID) {
-    alert("Fill all fields");
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("users")
-    .update({
-      name: newName,
-      uid: newUID
-    })
-    .eq("id", user.id);
-
-  if (error) {
-    alert("Update failed");
-    return;
-  }
-
-  alert("Profile Updated ✅");
-
-  // UI update instantly
-  document.getElementById("name").innerText = newName;
-  document.getElementById("uid").innerText = newUID;
-
-  document.getElementById("editForm").style.display = "none";
-}
-
-function deposit() {
-  alert("Deposit feature coming soon 💰");
-}
-
-function withdraw() {
-  alert("Withdraw feature coming soon 💸");
-}
-
-async function logout() {
-  await supabaseClient.auth.signOut();
-  window.location.href = "/login.html";
+  // name email
+  document.getElementById("name").innerText = user.user_metadata.name  "User";
+  document.getElementById("uid").innerText = "UID: " + (user.user_metadata.uid 
+ "N/A");
 }
 
 loadProfile();
+
+// logout
+async function logout() {
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
+}
 </script>
 
 </body>
