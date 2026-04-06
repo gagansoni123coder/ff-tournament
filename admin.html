@@ -109,6 +109,66 @@ async function unbanUser(id) {
 
   loadUsers();
 }
+  <h2>Deposit Requests</h2>
+<div id="list"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://your_url.supabase.co/",
+  "YOUR_ANON_KEY"
+);
+
+async function loadDeposits() {
+
+  let { data } = await supabaseClient
+    .from("deposits")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  let html = "";
+
+  data.forEach(d => {
+    html += 
+      <div style="border:1px solid white; margin:10px; padding:10px;">
+        <p>Amount: ₹${d.amount}</p>
+        <p>UTR: ${d.utr}</p>
+        <p>Status: ${d.status}</p>
+        <button onclick="approve('${d.id}', '${d.user_id}', ${d.amount})">Approve</button>
+      </div>
+    ;
+  });
+
+  document.getElementById("list").innerHTML = html;
+}
+
+async function approve(id, user_id, amount) {
+
+  // update status
+  await supabaseClient.from("deposits")
+    .update({ status: "approved" })
+    .eq("id", id);
+
+  // get current coins
+  let { data } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("id", user_id)
+    .single();
+
+  let newCoins = (data.coins || 0) + amount;
+
+  // update coins
+  await supabaseClient.from("users")
+    .update({ coins: newCoins })
+    .eq("id", user_id);
+
+  alert("Approved & Coins Added ✅");
+  loadDeposits();
+}
+
+loadDeposits();
 </script>
 
 </html>
