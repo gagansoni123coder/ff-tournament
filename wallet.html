@@ -63,13 +63,27 @@ loadCoins();
 
 
 // deposit
-function deposit() {
-  let amount = prompt("Enter deposit amount:");
-  if (!amount) return alert("Enter amount!");
+async function deposit() {
 
-  alert("Deposit request sent (admin approval pending) ✅");
+  let amount = prompt("Enter amount:");
+  if (!amount) return;
+
+  let utr = prompt("Enter UTR / Transaction ID:");
+  if (!utr) return;
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  await supabaseClient.from("deposits").insert([
+    {
+      user_id: user.id,
+      amount: amount,
+      utr: utr,
+      status: "pending"
+    }
+  ]);
+
+  alert("Deposit request sent ✅ Wait for admin approval");
 }
-
 // withdraw
 function withdraw() {
   let amount = prompt("Enter withdraw amount:");
