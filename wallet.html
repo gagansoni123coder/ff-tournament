@@ -41,20 +41,26 @@ async function loadCoins() {
   const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
+    alert("Login first!");
     window.location.href = "login.html";
     return;
   }
 
-  let { data } = await supabaseClient
+  let { data, error } = await supabaseClient
     .from("users")
     .select("coins")
     .eq("id", user.id)
     .single();
 
+  if (error) {
+    console.log(error);
+  }
+
   document.getElementById("coins").innerText = data?.coins || 0;
 }
 
 loadCoins();
+
 
 // deposit
 function deposit() {
