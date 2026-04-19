@@ -44,7 +44,7 @@ async function loadDeposits() {
 
   data.forEach(d => {
     html += 
-      <div class="admin-card">
+      '<div class="admin-card">
         <p><b>User:</b> ${d.user_id}</p>
         <p><b>Amount:</b> ₹${d.amount}</p>
         <p><b>UTR:</b> ${d.utr}</p>
@@ -53,7 +53,7 @@ async function loadDeposits() {
         <button onclick="approve('${d.id}', '${d.user_id}', ${d.amount})">✅ Approve</button>
         <button onclick="reject('${d.id}')">❌ Reject</button>
       </div>
-    ;
+    `;
   });
 
   document.getElementById("list").innerHTML = html;
