@@ -39,6 +39,51 @@ async function loadDeposits() {
     document.getElementById("list").innerHTML = "No data found";
     return;
   }
+  async function approve(id, user_id, amount) {
+
+  // update deposit status
+  await supabaseClient
+    .from("deposits")
+    .update({ status: "approved" })
+    .eq("id", id);
+
+  // get current coins
+  let { data } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("id", user_id)
+    .single();
+
+  let currentCoins = data?.coins || 0;
+
+  // add coins
+  await supabaseClient
+    .from("users")
+    .update({ coins: currentCoins + Number(amount) })
+    .eq("id", user_id);
+
+  alert("Approved & Coins Added ✅");
+
+  loadDeposits();
+}
+  
+async function reject(id) {
+
+  let reason = prompt("Enter rejection reason:");
+  if (!reason) return;
+
+  await supabaseClient
+    .from("deposits")
+    .update({
+      status: "rejected",
+      rejection_reason: reason
+    })
+    .eq("id", id);
+
+  alert("Rejected ❌");
+
+  loadDeposits();
+}
 
   let html = "";
 
