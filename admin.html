@@ -75,7 +75,7 @@ data.forEach(d => {
       <p><b>UTR:</b> ${d.utr}</p>
       <p><b>Status:</b> ${d.status}</p>
 
-      ${d.status === "rejected" ? <p style="color:red;">Reason: ${d.rejection_reason || ""}</p> : ""}
+      ${d.status === "rejected" ? '<p style="color:red;">Reason: ' + (d.rejection_reason || '') + '</p>' : ''}
 
       ${d.status === "pending" ? `
         <button onclick="approve('${d.id}','${d.user_id}',${d.amount})">✅ Approve</button>
