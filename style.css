@@ -421,4 +421,51 @@ body {
   background: red;
   color: white;
 }
+/* ADMIN PANEL */
+
+body {
+  background: #000;
+  color: white;
+  font-family: Arial;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.admin-card {
+  background: #111;
+  border: 1px solid cyan;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px;
+  box-shadow: 0 0 10px cyan;
+}
+
+.admin-card p {
+  margin: 5px 0;
+}
+
+.admin-buttons {
+  margin-top: 10px;
+}
+
+.admin-buttons button {
+  padding: 8px 12px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.approve-btn {
+  background: green;
+  color: white;
+}
+
+.reject-btn {
+  background: red;
+  color: white;
+}
 
