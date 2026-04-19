@@ -421,31 +421,26 @@ body {
   background: red;
   color: white;
 }
-body {
-  background: black;
-  color: white;
-  font-family: Arial;
-  padding: 15px;
-}
+/* ===== ADMIN PANEL ===== /
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+#list {
+  margin-top: 20px;
 }
 
 .admin-card {
-  background: #1a0033;
+  background: #1a0033 !important;
+  color: white !important;
   padding: 15px;
-  margin-bottom: 15px;
+  margin: 15px;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(128, 0, 255, 0.5);
+  box-shadow: 0 0 10px rgba(128, 0, 255, 0.6);
 }
 
 .admin-card p {
   margin: 5px 0;
 }
 
-button {
+.admin-card button {
   margin-top: 10px;
   margin-right: 10px;
   padding: 8px 12px;
@@ -455,17 +450,14 @@ button {
   font-weight: bold;
 }
 
-button:hover {
-  opacity: 0.8;
-}
-
-button:nth-child(5) {
+/ Approve button /
+.admin-card button:first-of-type {
   background: green;
   color: white;
 }
 
-button:nth-child(6) {
+/ Reject button */
+.admin-card button:last-of-type {
   background: red;
   color: white;
 }
-
