@@ -98,7 +98,7 @@ async function reject(id) {
       ${d.status === "pending" ? `
         <button onclick="approve('${d.id}', '${d.user_id}', ${d.amount})">✅ Approve</button>
         <button onclick="reject('${d.id}')">❌ Reject</button>
-      ` : ""}
+      `: ""}
     </div>
   `;
 });
