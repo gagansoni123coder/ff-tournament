@@ -63,25 +63,7 @@ async function loadDeposits() {
   alert("Approved & Coins Added ✅");
 
   loadDeposits();
-}
-  
-async function reject(id) {
-
-  let reason = prompt("Enter rejection reason:");
-  if (!reason) return;
-
-  await supabaseClient
-    .from("deposits")
-    .update({
-      status: "rejected",
-      rejection_reason: reason
-    })
-    .eq("id", id);
-
-  alert("Rejected ❌");
-
-  loadDeposits();
-}
+} 
 
   let html = "";
 
