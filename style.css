@@ -421,50 +421,50 @@ body {
   background: red;
   color: white;
 }
-/* ADMIN PANEL */
-
 body {
-  background: #000;
+  background: black;
   color: white;
   font-family: Arial;
+  padding: 15px;
 }
 
 h2 {
   text-align: center;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .admin-card {
-  background: #111;
-  border: 1px solid cyan;
-  border-radius: 10px;
+  background: #1a0033;
   padding: 15px;
-  margin: 15px;
-  box-shadow: 0 0 10px cyan;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(128, 0, 255, 0.5);
 }
 
 .admin-card p {
   margin: 5px 0;
 }
 
-.admin-buttons {
+button {
   margin-top: 10px;
-}
-
-.admin-buttons button {
+  margin-right: 10px;
   padding: 8px 12px;
-  margin-right: 5px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
 }
 
-.approve-btn {
+button:hover {
+  opacity: 0.8;
+}
+
+button:nth-child(5) {
   background: green;
   color: white;
 }
 
-.reject-btn {
+button:nth-child(6) {
   background: red;
   color: white;
 }
