@@ -63,32 +63,6 @@ async function loadDeposits() {
   alert("Approved & Coins Added ✅");
 
   loadDeposits();
-    async function approve(id, user_id, amount) {
-
-  // deposit approved
-  await supabaseClient
-    .from("deposits")
-    .update({ status: "approved" })
-    .eq("id", id);
-
-  // user ke coins nikaalo
-  let { data } = await supabaseClient
-    .from("users")
-    .select("coins")
-    .eq("id", user_id)
-    .single();
-
-  let coins = data?.coins || 0;
-
-  // coins add karo
-  await supabaseClient
-    .from("users")
-    .update({ coins: coins + Number(amount) })
-    .eq("id", user_id);
-
-  alert("Approved ✅ Coins Added");
-
-  loadDeposits();
 }
 
   let html = "";
@@ -113,9 +87,6 @@ data.forEach(d => {
 
   document.getElementById("list").innerHTML = html;
 }
-
-loadDeposits();
-
 </script>
 
 </body>
