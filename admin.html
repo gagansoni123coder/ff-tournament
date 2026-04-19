@@ -42,19 +42,21 @@ async function loadDeposits() {
   let html = "";
 
   data.forEach(d => {
-    html += 
-      <div style="border:1px solid white; margin:10px; padding:10px;">
-        <p><b>User ID:</b> ${d.user_id}</p>
-        <p><b>Amount:</b> ₹${d.amount}</p>
-        <p><b>UTR:</b> ${d.utr}</p>
-        <p><b>Status:</b> ${d.status}</p>
+   html += 
+  <div class="admin-card">
+    <p><b>User:</b> ${d.user_id}</p>
+    <p><b>Amount:</b> ₹${d.amount}</p>
+    <p><b>UTR:</b> ${d.utr}</p>
+    <p><b>Status:</b> ${d.status}</p>
 
-        ${d.status === "pending" ? 
-          <button onclick="approve('${d.id}','${d.user_id}',${d.amount})">✅ Approve</button>
-          <button onclick="reject('${d.id}')">❌ Reject</button>
-         : ""}
+    ${d.status === "pending" ? 
+      <div class="admin-buttons">
+        <button class="approve-btn" onclick="approve('${d.id}','${d.user_id}',${d.amount})">Approve</button>
+        <button class="reject-btn" onclick="reject('${d.id}')">Reject</button>
       </div>
-    ;
+     : ""}
+  </div>
+;
   });
 
   document.getElementById("list").innerHTML = html;
