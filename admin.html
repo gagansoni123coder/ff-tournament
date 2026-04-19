@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
   <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -12,6 +12,7 @@
 
 <div id="list"></div>
 
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
@@ -20,7 +21,7 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-// 🔥 LOAD DATA
+// LOAD DEPOSITS
 async function loadDeposits() {
 
   const { data, error } = await supabaseClient
@@ -29,8 +30,8 @@ async function loadDeposits() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    alert("Error: " + error.message);
     console.log(error);
+    document.getElementById("list").innerHTML = "<p>Error loading data ❌</p>";
     return;
   }
 
@@ -42,21 +43,17 @@ async function loadDeposits() {
   let html = "";
 
   data.forEach(d => {
-   html += 
-  <div class="admin-card">
-    <p><b>User:</b> ${d.user_id}</p>
-    <p><b>Amount:</b> ₹${d.amount}</p>
-    <p><b>UTR:</b> ${d.utr}</p>
-    <p><b>Status:</b> ${d.status}</p>
+    html += 
+      <div class="admin-card">
+        <p><b>User:</b> ${d.user_id}</p>
+        <p><b>Amount:</b> ₹${d.amount}</p>
+        <p><b>UTR:</b> ${d.utr}</p>
+        <p><b>Status:</b> ${d.status}</p>
 
-    ${d.status === "pending" ? 
-      <div class="admin-buttons">
-        <button class="approve-btn" onclick="approve('${d.id}','${d.user_id}',${d.amount})">Approve</button>
-        <button class="reject-btn" onclick="reject('${d.id}')">Reject</button>
+        <button onclick="approve('${d.id}', '${d.user_id}', ${d.amount})">✅ Approve</button>
+        <button onclick="reject('${d.id}')">❌ Reject</button>
       </div>
-     : ""}
-  </div>
-;
+    ;
   });
 
   document.getElementById("list").innerHTML = html;
@@ -67,28 +64,29 @@ loadDeposits();
 
 // ✅ APPROVE
 async function approve(id, user_id, amount) {
-// update status
+
+  // update deposit status
   await supabaseClient
     .from("deposits")
     .update({ status: "approved" })
-    .eq("id", id);
+.eq("id", id);
 
-  // get coins
-  let { data } = await supabaseClient
+  // add coins to user
+  let { data: userData } = await supabaseClient
     .from("users")
     .select("coins")
     .eq("id", user_id)
     .single();
 
-  let newCoins = (data?.coins || 0) + amount;
+  let newCoins = (userData?.coins || 0) + Number(amount);
 
-  // update coins
   await supabaseClient
     .from("users")
     .update({ coins: newCoins })
     .eq("id", user_id);
 
-  alert("Approved ✅ Coins Added");
+  alert("Approved & Coins Added ✅");
+
   loadDeposits();
 }
 
@@ -101,6 +99,7 @@ async function reject(id) {
     .eq("id", id);
 
   alert("Rejected ❌");
+
   loadDeposits();
 }
 
