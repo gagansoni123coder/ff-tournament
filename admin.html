@@ -40,8 +40,7 @@ async function loadDeposits() {
     return;
   }
   async function approve(id, user_id, amount) {
-
-  // update deposit status
+    
   await supabaseClient
     .from("deposits")
     .update({ status: "approved" })
@@ -55,8 +54,7 @@ async function loadDeposits() {
     .single();
 
   let currentCoins = data?.coins || 0;
-
-  // add coins
+    
   await supabaseClient
     .from("users")
     .update({ coins: currentCoins + Number(amount) })
