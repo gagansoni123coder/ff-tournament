@@ -2,140 +2,56 @@
 <html>
 <head>
   <title>Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<header>⚙ Admin Panel</header>
+<h2>👑 Admin Panel</h2>
 
-<h2>All Users</h2>
-
-<div id="users"></div>
-
-</body>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<script>
-const supabase = supabase.createClient("https://ggkqsfkxmmusrmczoyuk.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI");
-
-// 🔐 Check admin
-async function checkAdmin() {
-  const { data: userData } = await supabase.auth.getUser();
-
-  if (!userData.user) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  const { data } = await supabase
-    .from("users")
-    .select("")
-    .eq("id", userData.user.id)
-    .single();
-
-  if (!data.is_admin) {
-    alert("Access Denied ❌");
-    window.location.href = "home.html";
-  }
-}
-
-checkAdmin();
-
-// 👥 Load users
-async function loadUsers() {
-  const { data, error } = await supabase.from("users").select("");
-
-  let html = "";
-
-  data.forEach(user => {
-    html += 
-      <div style="border:1px solid white; margin:10px; padding:10px;">
-        <p>Name: ${user.name}</p>
-        <p>Email: ${user.email}</p>
-        <p>Coins: ${user.coins}</p>
-        
-        <button onclick="addCoins('${user.id}')">+50 Coins</button>
-        <button onclick="removeCoins('${user.id}')">-20 Coins</button>
-        <button onclick="banUser('${user.id}')">Ban 🚫</button>
-        <button onclick="unbanUser('${user.id}')">Unban ✅</button>
-      </div>
-    ;
-  });
-
-  document.getElementById("users").innerHTML = html;
-}
-
-loadUsers();
-
-// 💰 Add coins
-async function addCoins(id) {
-  const { data } = await supabase.from("users").select("coins").eq("id", id).single();
-
-  await supabase.from("users")
-    .update({ coins: data.coins + 50 })
-    .eq("id", id);
-
-  loadUsers();
-}
-
-// ❌ Remove coins
-async function removeCoins(id) {
-  const { data } = await supabase.from("users").select("coins").eq("id", id).single();
-
-  await supabase.from("users")
-    .update({ coins: data.coins - 20 })
-    .eq("id", id);
-
-  loadUsers();
-}
-
-// 🚫 Ban
-async function banUser(id) {
-  await supabase.from("users")
-    .update({ banned: true })
-    .eq("id", id);
-
-  loadUsers();
-}
-
-// ✅ Unban
-async function unbanUser(id) {
-  await supabase.from("users")
-    .update({ banned: false })
-    .eq("id", id);
-
-  loadUsers();
-}
-  <h2>Deposit Requests</h2>
 <div id="list"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 const supabaseClient = supabase.createClient(
-  "https://your_url.supabase.co/",
-  "YOUR_ANON_KEY"
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
+// 🔥 LOAD DATA
 async function loadDeposits() {
 
-  let { data } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("deposits")
     .select("*")
     .order("created_at", { ascending: false });
+
+  if (error) {
+    alert("Error: " + error.message);
+    console.log(error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("list").innerHTML = "<p>No deposits found ❌</p>";
+    return;
+  }
 
   let html = "";
 
   data.forEach(d => {
     html += 
       <div style="border:1px solid white; margin:10px; padding:10px;">
-        <p>Amount: ₹${d.amount}</p>
-        <p>UTR: ${d.utr}</p>
-        <p>Status: ${d.status}</p>
-        <button onclick="approve('${d.id}', '${d.user_id}', ${d.amount})">Approve</button>
+        <p><b>User ID:</b> ${d.user_id}</p>
+        <p><b>Amount:</b> ₹${d.amount}</p>
+        <p><b>UTR:</b> ${d.utr}</p>
+        <p><b>Status:</b> ${d.status}</p>
+
+        ${d.status === "pending" ? 
+          <button onclick="approve('${d.id}','${d.user_id}',${d.amount})">✅ Approve</button>
+          <button onclick="reject('${d.id}')">❌ Reject</button>
+         : ""}
       </div>
     ;
   });
@@ -143,32 +59,49 @@ async function loadDeposits() {
   document.getElementById("list").innerHTML = html;
 }
 
-async function approve(id, user_id, amount) {
+loadDeposits();
 
-  // update status
-  await supabaseClient.from("deposits")
+
+// ✅ APPROVE
+async function approve(id, user_id, amount) {
+// update status
+  await supabaseClient
+    .from("deposits")
     .update({ status: "approved" })
     .eq("id", id);
 
-  // get current coins
+  // get coins
   let { data } = await supabaseClient
     .from("users")
     .select("coins")
     .eq("id", user_id)
     .single();
 
-  let newCoins = (data.coins || 0) + amount;
+  let newCoins = (data?.coins || 0) + amount;
 
   // update coins
-  await supabaseClient.from("users")
+  await supabaseClient
+    .from("users")
     .update({ coins: newCoins })
     .eq("id", user_id);
 
-  alert("Approved & Coins Added ✅");
+  alert("Approved ✅ Coins Added");
   loadDeposits();
 }
 
-loadDeposits();
+
+// ❌ REJECT
+async function reject(id) {
+  await supabaseClient
+    .from("deposits")
+    .update({ status: "rejected" })
+    .eq("id", id);
+
+  alert("Rejected ❌");
+  loadDeposits();
+}
+
 </script>
 
+</body>
 </html>
