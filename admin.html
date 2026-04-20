@@ -2,92 +2,91 @@
 <html>
 <head>
   <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h2>👑 Admin Panel</h2>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>🎮 Admin</h2>
 
-<div id="list"></div>
+  <button onclick="showPage('dashboard')">Dashboard</button>
+  <button onclick="showPage('deposits')">Deposits</button>
+  <button onclick="showPage('withdraw')">Withdraw</button>
+  <button onclick="showPage('users')">Users</button>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<!-- MAIN -->
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <h2>📊 Dashboard</h2>
+
+    <div class="top">
+      <div class="stat">💰 Total Deposits<br>₹0</div>
+      <div class="stat">👤 Users<br>0</div>
+      <div class="stat">💸 Withdraw<br>₹0</div>
+    </div>
+  </div>
+
+  <!-- DEPOSITS -->
+  <div id="deposits" style="display:none;">
+    <h2>💰 Deposit Requests</h2>
+    <div id="depositList"></div>
+  </div>
+
+  <!-- WITHDRAW -->
+  <div id="withdraw" style="display:none;">
+    <h2>💸 Withdraw Requests</h2>
+    <div class="card">No withdraw yet</div>
+  </div>
+
+  <!-- USERS -->
+  <div id="users" style="display:none;">
+    <h2>👤 Users</h2>
+    <div class="card">User list coming soon</div>
+  </div>
+
+</div>
 
 <script>
+function showPage(page) {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("deposits").style.display = "none";
+  document.getElementById("withdraw").style.display = "none";
+  document.getElementById("users").style.display = "none";
 
-const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
-);
-
-async function loadDeposits() {
-
-  const { data, error } = await supabaseClient
-    .from("deposits")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.log(error);
-    document.getElementById("list").innerHTML = "Error loading data";
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    document.getElementById("list").innerHTML = "No data found";
-    return;
-  }
-  async function approve(id, user_id, amount) {
-    
-  await supabaseClient
-    .from("deposits")
-    .update({ status: "approved" })
-    .eq("id", id);
-
-  // get current coins
-  let { data } = await supabaseClient
-    .from("users")
-    .select("coins")
-    .eq("id", user_id)
-    .single();
-
-  let currentCoins = data?.coins || 0;
-    
-  await supabaseClient
-    .from("users")
-    .update({ coins: currentCoins + Number(amount) })
-    .eq("id", user_id);
-
-  alert("Approved & Coins Added ✅");
-
-  loadDeposits();
+  document.getElementById(page).style.display = "block";
 }
+// DEMO DATA (baad me supabase se connect karenge)
+let demo = [
+  {user_id:"123", amount:100, status:"pending"},
+  {user_id:"456", amount:200, status:"pending"}
+];
 
+function loadDeposits() {
   let html = "";
 
-data.forEach(d => {
-  html += `
-    <div class="admin-card">
-      <p><b>User:</b> ${d.user_id}</p>
-      <p><b>Amount:</b> ₹${d.amount}</p>
-      <p><b>UTR:</b> ${d.utr}</p>
-      <p><b>Status:</b> ${d.status}</p>
+  demo.forEach(d => {
+    html += 
+      <div class="card">
+        <p>User: ${d.user_id}</p>
+        <p>Amount: ₹${d.amount}</p>
+        <p>Status: ${d.status}</p>
 
-      ${d.status === "rejected" ? '<p style="color:red;">Reason: ' + (d.rejection_reason || '') + '</p>' : ''}
+        <button class="approve">Approve</button>
+        <button class="reject">Reject</button>
+      </div>
+    ;
+  });
 
-      ${d.status === "pending" ? `
-        <button onclick="approve('${d.id}','${d.user_id}',${d.amount})">✅ Approve</button>
-        <button onclick="reject('${d.id}')">❌ Reject</button>
-      ` : ""}
-    </div>
-  `;
-});
-
-  document.getElementById("list").innerHTML = html;
+  document.getElementById("depositList").innerHTML = html;
 }
 
+loadDeposits();
 </script>
 
 </body>
