@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deposit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS LINK -->
+  <link rel="stylesheet" href="deposit.css">
+</head>
+
+<body>
+
+<h2>💰 Deposit Coins</h2>
+
+<div class="box">
+
+  <p>Pay on this UPI:</p>
+  <h3 class="upi">gagansoni112232@oksbi</h3>
+
+  <input type="number" id="amount" placeholder="Enter Amount">
+  <input type="text" id="utr" placeholder="Enter UTR / Transaction ID">
+
+  <button onclick="submitDeposit()">Submit Deposit</button>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
+);
+
+async function submitDeposit(){
+
+  let amount = document.getElementById("amount").value;
+  let utr = document.getElementById("utr").value;
+
+  if(!amount || !utr){
+    alert("Fill all fields");
+    return;
+  }
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  await supabaseClient.from("deposits").insert([
+    {
+      user_id: user.id,
+      amount: amount,
+      utr: utr,
+      status: "pending"
+    }
+  ]);
+
+  alert("✅ Deposit request sent");
+
+  window.location.href = "wallet.html";
+}
+</script>
+
+</body>
+</html>
