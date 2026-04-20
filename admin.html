@@ -12,25 +12,18 @@
 <div class="sidebar">
   <h2>🎮 Admin</h2>
 
-  <button onclick="showPage('dashboard')">Dashboard</button>
-  <button onclick="showPage('deposits')">Deposits</button>
-  <button onclick="showPage('withdraw')">Withdraw</button>
-  <button onclick="showPage('users')">Users</button>
+  <button onclick="go('dashboard.html')">📊 Dashboard</button>
+  <button onclick="showPage('deposits')">💰 Deposits</button>
+  <button onclick="showPage('withdraw')">💸 Withdraw</button>
+  <button onclick="showPage('users')">👤 Users</button>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-  <!-- DASHBOARD -->
-  <div id="dashboard">
-    <h2>📊 Dashboard</h2>
-
-    <div class="top">
-      <div class="stat">💰 Total Deposits<br>₹0</div>
-      <div class="stat">👤 Users<br>0</div>
-      <div class="stat">💸 Withdraw<br>₹0</div>
-    </div>
-  </div>
+  <!-- DEFAULT -->
+  <h2>👑 Control Panel</h2>
+  <p>Select an option from left menu</p>
 
   <!-- DEPOSITS -->
   <div id="deposits" style="display:none;">
@@ -41,52 +34,33 @@
   <!-- WITHDRAW -->
   <div id="withdraw" style="display:none;">
     <h2>💸 Withdraw Requests</h2>
-    <div class="card">No withdraw yet</div>
+    <div id="withdrawList">No data</div>
   </div>
 
   <!-- USERS -->
   <div id="users" style="display:none;">
     <h2>👤 Users</h2>
-    <div class="card">User list coming soon</div>
+    <div id="userList">Coming soon</div>
   </div>
 
 </div>
 
 <script>
-function showPage(page) {
-  document.getElementById("dashboard").style.display = "none";
+
+// redirect
+function go(page){
+  window.location.href = page;
+}
+
+// show sections
+function showPage(page){
   document.getElementById("deposits").style.display = "none";
   document.getElementById("withdraw").style.display = "none";
   document.getElementById("users").style.display = "none";
 
   document.getElementById(page).style.display = "block";
 }
-// DEMO DATA (baad me supabase se connect karenge)
-let demo = [
-  {user_id:"123", amount:100, status:"pending"},
-  {user_id:"456", amount:200, status:"pending"}
-];
 
-function loadDeposits() {
-  let html = "";
-
-  demo.forEach(d => {
-    html += 
-      <div class="card">
-        <p>User: ${d.user_id}</p>
-        <p>Amount: ₹${d.amount}</p>
-        <p>Status: ${d.status}</p>
-
-        <button class="approve">Approve</button>
-        <button class="reject">Reject</button>
-      </div>
-    ;
-  });
-
-  document.getElementById("depositList").innerHTML = html;
-}
-
-loadDeposits();
 </script>
 
 </body>
