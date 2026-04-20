@@ -43,9 +43,13 @@ async function submitDeposit(){
     return;
   }
 
+  // 🔥 loading show
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("btn").disabled = true;
+
   const { data: { user } } = await supabaseClient.auth.getUser();
 
-  await supabaseClient.from("deposits").insert([
+  let { error } = await supabaseClient.from("deposits").insert([
     {
       user_id: user.id,
       amount: amount,
@@ -54,7 +58,13 @@ async function submitDeposit(){
     }
   ]);
 
-  alert("✅ Deposit request sent");
+  if(error){
+    alert("Error ❌");
+    console.log(error);
+    return;
+  }
+
+  alert("✅ Request Sent!");
 
   window.location.href = "wallet.html";
 }
