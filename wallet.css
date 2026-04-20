@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: linear-gradient(135deg, #0a0a0a, #1a0033);
+  background: radial-gradient(circle, #0a0a0a, #1a0033);
   color: white;
 }
 
@@ -9,25 +9,32 @@ body {
   padding: 20px;
 }
 
-/* HEADER /
-.header {
+/* TITLE /
+.title {
   text-align: center;
   color: cyan;
+  text-shadow: 0 0 10px cyan;
 }
 
-/ COINS BOX /
+/ COINS CARD /
 .coins-box {
   background: #111;
-  margin-top: 20px;
   padding: 25px;
   border-radius: 15px;
   text-align: center;
+  margin-top: 20px;
   box-shadow: 0 0 20px purple;
+  animation: glow 2s infinite alternate;
 }
 
 .coins-box h1 {
-  font-size: 40px;
-  margin: 10px 0;
+  font-size: 45px;
+}
+
+/ GLOW ANIMATION /
+@keyframes glow {
+  from { box-shadow: 0 0 10px purple; }
+  to { box-shadow: 0 0 25px cyan; }
 }
 
 / BUTTONS /
@@ -41,19 +48,60 @@ body {
   flex: 1;
   padding: 15px;
   border: none;
-  border-radius: 10px;
-  background: purple;
-  color: white;
+  border-radius: 12px;
   font-size: 16px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+/ DEPOSIT BUTTON /
+.deposit-btn {
+  background: linear-gradient(45deg, purple, blue);
+  color: white;
+  box-shadow: 0 0 10px purple;
+}
+
+/ WITHDRAW BUTTON /
+.withdraw-btn {
+  background: linear-gradient(45deg, red, orange);
+  color: white;
+  box-shadow: 0 0 10px red;
+}
+
+/ HOVER EFFECT /
 .actions button:hover {
-  background: cyan;
-  color: black;
+  transform: scale(1.07);
+  box-shadow: 0 0 20px cyan;
 }
 
-/ HISTORY */
+/ CLICK EFFECT /
+.actions button:active {
+  transform: scale(0.95);
+}
+
+/ EXTRA CARDS /
+.extras {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.extra-card {
+  flex: 1;
+  background: #1a0033;
+  padding: 15px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 10px purple;
+  transition: 0.3s;
+}
+
+.extra-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px cyan;
+}
+
+/ HISTORY /
 .history {
   margin-top: 30px;
 }
@@ -62,10 +110,7 @@ body {
   color: cyan;
 }
 
-#historyList {
-  margin-top: 10px;
-}
-
+/ TRANSACTION CARD */
 .history-card {
   background: #1a0033;
   padding: 12px;
@@ -73,48 +118,10 @@ body {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
-}
-/* COINS GLOW /
-.coins-box {
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    box-shadow: 0 0 10px purple;
-  }
-  to {
-    box-shadow: 0 0 25px cyan;
-  }
-}
-
-/ BUTTON HOVER /
-.actions button {
-  transition: 0.3s;
-}
-
-.actions button:hover {
-  transform: scale(1.05);
-}
-
-/ CLICK EFFECT /
-.actions button:active {
-  transform: scale(0.95);
-}
-
-/ HISTORY ANIMATION */
-.history-card {
-  animation: fadeUp 0.5s ease;
+  animation: fadeUp 0.4s ease;
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform:translateY(0); }
 }
-
