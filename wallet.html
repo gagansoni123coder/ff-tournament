@@ -113,47 +113,5 @@ loadWallet();
 
 </script>
 
-<script 
-  scr="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  const supabaseclient=supabase.createclient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co"
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
-  );
-
-async function loadWallet(){
-
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if(!user){
-    window.location.href = "login.html";
-    return;
-  }
-
-  let { data, error } = await supabaseClient
-    .from("users")
-    .select("coins, bonus")
-    .eq("id", user.id)
-    .single();
-
-  if(error){
-    console.log(error);
-    return;
-  }
-
-  let coins = data?.coins ` 0;
-  let bonus = data?.bonus 
-`0;
-
-  document.getElementById("coins").innerText = coins;
-  document.getElementById("bonus").innerText = bonus;
-
-  // level bar
-  let percent = Math.min(coins / 1000 * 100, 100);
-  document.getElementById("levelBar").style.width = percent + "%";
-}
-  loadwallet();
-
-</script>
-
 </body>
 </html>
