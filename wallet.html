@@ -2,98 +2,51 @@
 <html>
 <head>
   <title>Wallet</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="wallet.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<div class="wallet-container">
+<div class="wallet">
 
   <!-- TOP -->
-  <h2>💼 My Wallet</h2>
-
-  <!-- COINS -->
-  <div class="coins-card">
-    <h1 id="coins">0</h1>
-    <p>Total Coins</p>
+  <div class="header">
+    <h2>💼 My Wallet</h2>
   </div>
 
-  <!-- BUTTONS -->
-  <div class="wallet-buttons">
-   <p> pay on this upi:</p>
-  <h3 style="color:cyan;">gagansoni112232@oksbi</h3> 
-    <button onclick="deposit()">💰 Deposit</button>
+  <!-- COINS -->
+  <div class="coins-box">
+    <p>Total Coins</p>
+    <h1 id="coins">0</h1>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button onclick="goDeposit()">💰 Deposit</button>
     <button onclick="withdraw()">💸 Withdraw</button>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history">
+    <h3>📜 Transactions</h3>
+    <div id="historyList">No data</div>
   </div>
 
 </div>
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 <script>
-const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
-);
 
-// load coins
-async function loadCoins() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) {
-    alert("Login first!");
-    window.location.href = "login.html";
-    return;
-  }
-
-  let { data, error } = await supabaseClient
-    .from("users")
-    .select("coins")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    console.log(error);
-  }
-
-  document.getElementById("coins").innerText = data?.coins || 0;
+// redirect to payment page
+function goDeposit(){
+  window.location.href = "payment.html";
 }
 
-loadCoins();
-
-
-// deposit
-async function deposit() {
-
-  let amount = prompt("Enter amount:");
-  if (!amount) return;
-
-  let utr = prompt("Enter UTR / Transaction ID:");
-  if (!utr) return;
-
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  await supabaseClient.from("deposits").insert([
-    {
-      user_id: user.id,
-      amount: amount,
-      utr: utr,
-      status: "pending"
-    }
-  ]);
-
-  alert("Deposit request sent ✅ Wait for admin approval");
+// withdraw (same logic use kar sakta hai)
+function withdraw(){
+  alert("Withdraw system connected hai admin se");
 }
-// withdraw
-function withdraw() {
-  let amount =
-prompt("Enter withdraw amount:");
-  if (!amount) return alert("Enter amount!");
 
-  alert("Withdraw request sent (admin approval pending) ✅");
-}
 </script>
 
 </body>
