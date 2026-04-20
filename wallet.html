@@ -10,39 +10,50 @@
 
 <h1 class="title">💼 My Wallet</h1>
 
-<!-- TOP BALANCE -->
-<div class="balance-box">
-  <h2 id="coins">0</h2>
-  <p>Total Coins</p>
+<!-- TOP CARD (HOME STYLE) -->
+<div class="card">
+  <h2>👋 Welcome Player</h2>
+
+  <div class="coins-row">
+    <div class="coin-box">
+      <p>💰 Cash Coins</p>
+      <h3 id="coins">0</h3>
+    </div>
+
+    <div class="coin-box">
+      <p>🎁 Bonus Coins</p>
+      <h3 id="bonus">0</h3>
+    </div>
+  </div>
 </div>
 
-<!-- ACTION BOXES -->
+<!-- ACTION BUTTONS (HOME GRID STYLE) -->
 <div class="grid">
 
-  <div class="box" onclick="goDeposit()">
+  <div class="game-box deposit" onclick="goDeposit()">
     <h3>💰</h3>
     <p>Deposit</p>
   </div>
 
-  <div class="box" onclick="withdraw()">
+  <div class="game-box withdraw" onclick="withdraw()">
     <h3>💸</h3>
     <p>Withdraw</p>
   </div>
 
-  <div class="box" onclick="claimReward()">
+  <div class="game-box reward" onclick="reward()">
     <h3>🎁</h3>
-    <p>Reward</p>
+    <p>Rewards</p>
   </div>
 
-  <div class="box">
+  <div class="game-box stats">
     <h3>📊</h3>
     <p>Stats</p>
   </div>
 
 </div>
 
-<!-- LEVEL -->
-<div class="level-box">
+<!-- LEVEL BAR -->
+<div class="card">
   <p>Level Progress</p>
   <div class="bar">
     <div class="fill" id="levelBar"></div>
@@ -50,7 +61,7 @@
 </div>
 
 <!-- TRANSACTIONS -->
-<div class="history">
+<div class="card">
   <h3>📜 Transactions</h3>
   <div id="transactions"></div>
 </div>
@@ -64,22 +75,18 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-// redirect
 function goDeposit(){
-  window.location.href = "deposit.html";
+window.location.href = "deposit.html";
 }
 
-// withdraw
 function withdraw(){
   alert("Withdraw page coming");
 }
 
-// reward demo
-function claimReward(){
-  alert("Reward system next step 🔥");
+function reward(){
+  alert("Rewards coming");
 }
 
-// load wallet
 async function loadWallet(){
 
   const { data: { user } } = await supabaseClient.auth.getUser();
@@ -91,13 +98,16 @@ async function loadWallet(){
 
   let { data } = await supabaseClient
     .from("users")
-    .select("coins")
+    .select("coins, bonus")
     .eq("id", user.id)
     .single();
 
-  let coins = data?.coins || 0;
+  let coins = data?.coins ` 0;
+  let bonus = data?.bonus 
+ `0;
 
   document.getElementById("coins").innerText = coins;
+  document.getElementById("bonus").innerText = bonus;
 
   let percent = Math.min(coins / 1000 * 100, 100);
   document.getElementById("levelBar").style.width = percent + "%";
