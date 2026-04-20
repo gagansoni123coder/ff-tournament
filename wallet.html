@@ -8,120 +8,78 @@
 
 <body>
 
-<div class="wallet">
+<h1 class="title">💼 My Wallet</h1>
 
-  <!-- COINS -->
-  <div class="coins-section">
-    <div class="card">
-      <p>Main Coins</p>
-      <h1 id="coins">0</h1>
-    </div>
+<!-- TOP BALANCE -->
+<div class="balance-box">
+  <h2 id="coins">0</h2>
+  <p>Total Coins</p>
+</div>
 
-    <div class="card bonus">
-      <p>Bonus Coins</p>
-      <h1 id="bonus">0</h1>
-    </div>
+<!-- ACTION BOXES -->
+<div class="grid">
+
+  <div class="box" onclick="goDeposit()">
+    <h3>💰</h3>
+    <p>Deposit</p>
   </div>
 
-  <!-- ACTION GRID -->
-  <div class="grid">
-    <button onclick="deposit.html()">💰 Deposit</button>
-    <button onclick="withdraw()">💸 Withdraw</button>
-    <button onclick="claimReward()">🎁 Reward</button>
-    <button onclick="alert('Stats coming')">📊 Stats</button>
+  <div class="box" onclick="withdraw()">
+    <h3>💸</h3>
+    <p>Withdraw</p>
   </div>
 
-  <!-- DAILY REWARD -->
-  <div class="reward-box">
-    <button onclick="claimReward()">🎁 Claim Daily Reward</button>
+  <div class="box" onclick="claimReward()">
+    <h3>🎁</h3>
+    <p>Reward</p>
   </div>
 
-  <!-- LEVEL -->
-  <div class="level">
-    <p>Level 1</p>
-    <div class="bar">
-      <div class="fill" id="levelBar"></div>
-    </div>
-  </div>
-
-  <!-- HISTORY -->
-  <div class="history">
-    <h3>📜 Transactions</h3>
-    <div id="historyList"></div>
+  <div class="box">
+    <h3>📊</h3>
+    <p>Stats</p>
   </div>
 
 </div>
 
-<script>
+<!-- LEVEL -->
+<div class="level-box">
+  <p>Level Progress</p>
+  <div class="bar">
+    <div class="fill" id="levelBar"></div>
+  </div>
+</div>
 
-// navigation
-function goDeposit(){
-  window.location.href = "deposit.html";
-}
-
-// withdraw
-function withdraw(){
-  alert("Withdraw system connected");
-}
-
-// 🎁 DAILY REWARD
-function claimReward(){
-  let last = localStorage.getItem("rewardTime");
-  let now = Date.now();
-
-  if(last && now - last < 86400000){
-    alert("Already claimed today ❌");
-    return;
-  }
-
-  let reward = 50;
-
-  let coins = Number(localStorage.getItem("coins")  `0);
-  coins += reward;
-
-  localStorage.setItem("coins", coins);
-  localStorage.setItem("rewardTime", now);
-
-  loadWallet();
-  alert("🎉 +50 Coins Added!");
-`}
-
-// LOAD DATA
-function loadWallet(){
-
-  let coins = Number(localStorage.getItem("coins")  0);
-let bonus = Number(localStorage.getItem("bonus") || 0);
-
-  document.getElementById("coins").innerText = coins;
-  document.getElementById("bonus").innerText = bonus;
-
-  // level bar
-  let percent = Math.min(coins / 1000 * 100, 100);
-  document.getElementById("levelBar").style.width = percent + "%";
-
-  // history demo
-  let html =` 
-    <div class="item green">+100 Deposit</div>
-    <div class="item red">-50 Withdraw</div>
-    <div class="item yellow">Pending</div>
-  `;
-
-  document.getElementById("historyList").innerHTML = html;
-}
-
-loadWallet();
-
-</script>
+<!-- TRANSACTIONS -->
+<div class="history">
+  <h3>📜 Transactions</h3>
+  <div id="transactions"></div>
+</div>
 
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
+// redirect
+function goDeposit(){
+  window.location.href = "deposit.html";
+}
+
+// withdraw
+function withdraw(){
+  alert("Withdraw page coming");
+}
+
+// reward demo
+function claimReward(){
+  alert("Reward system next step 🔥");
+}
+
+// load wallet
 async function loadWallet(){
 
   const { data: { user } } = await supabaseClient.auth.getUser();
@@ -131,34 +89,22 @@ async function loadWallet(){
     return;
   }
 
-  let { data, error } = await supabaseClient
+  let { data } = await supabaseClient
     .from("users")
-    .select("coins, bonus")
+    .select("coins")
     .eq("id", user.id)
     .single();
 
-  if(error){
-    console.log(error);
-    return;
-  }
-
-  let coins = data?.coins` 0;
-  let bonus = data?.bonus 
- `0;
+  let coins = data?.coins || 0;
 
   document.getElementById("coins").innerText = coins;
-  document.getElementById("bonus").innerText = bonus;
 
   let percent = Math.min(coins / 1000 * 100, 100);
   document.getElementById("levelBar").style.width = percent + "%";
 }
-  function godeposit(){
-    window.loction.href="deposit.html";
-  }
 
 loadWallet();
 </script>
-
 
 </body>
 </html>
