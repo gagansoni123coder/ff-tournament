@@ -119,7 +119,7 @@ loadWallet();
 <script>
 const supabaseClient = supabase.createClient(
   "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
-  "YOUR_KEY"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
 async function loadWallet(){
@@ -142,9 +142,9 @@ async function loadWallet(){
     return;
   }
 
-  let coins = data?.coins  0;
+  let coins = data?.coins` 0;
   let bonus = data?.bonus 
- 0;
+ `0;
 
   document.getElementById("coins").innerText = coins;
   document.getElementById("bonus").innerText = bonus;
