@@ -503,3 +503,85 @@ body {
   padding: 8px 12px;
   border-radius: 6px;
 }
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #0a0a0a, #1a0033);
+  color: white;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: cyan;
+}
+
+/* STATS /
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 15px purple;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+/ ACTIONS /
+.actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.actions button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: purple;
+  color: white;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: cyan;
+  color: black;
+}
+
+/ ACTIVITY /
+.sub {
+  margin-top: 30px;
+}
+
+.activity-card {
+  background: #1a0033;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/ STATUS COLORS */
+.approved {
+  color: lightgreen;
+}
+
+.pending {
+  color: orange;
+}
+
+.rejected {
+  color: red;
+}
