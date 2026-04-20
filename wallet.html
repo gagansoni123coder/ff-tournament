@@ -11,26 +11,34 @@
 <div class="wallet">
 
   <!-- TOP -->
-  <div class="header">
-    <h2>💼 My Wallet</h2>
-  </div>
+  <div class="wallet">
 
-  <!-- COINS -->
+  <!-- HEADER -->
+  <h2 class="title">💼 My Wallet</h2>
+
+  <!-- COINS CARD -->
   <div class="coins-box">
     <p>Total Coins</p>
     <h1 id="coins">0</h1>
   </div>
 
-  <!-- ACTIONS -->
+  <!-- ACTION BUTTONS -->
   <div class="actions">
-    <button onclick="goDeposit()">💰 Deposit</button>
-    <button onclick="withdraw()">💸 Withdraw</button>
+    <button class="deposit-btn" onclick="goDeposit()">💰 Deposit</button>
+    <button class="withdraw-btn" onclick="withdraw()">💸 Withdraw</button>
+  </div>
+
+  <!-- EXTRA FEATURES -->
+  <div class="extras">
+    <div class="extra-card">🎁 Bonus</div>
+    <div class="extra-card">🏆 Rewards</div>
+    <div class="extra-card">📊 Stats</div>
   </div>
 
   <!-- HISTORY -->
   <div class="history">
     <h3>📜 Transactions</h3>
-    <div id="historyList">No data</div>
+    <div id="historyList"></div>
   </div>
 
 </div>
