@@ -8,56 +8,36 @@
 
 <body>
 
-<h1 class="title">💼 My Wallet</h1>
-
-<!-- TOP CARD (HOME STYLE) -->
-<div class="card">
-  <h2>👋 Welcome Player</h2>
-
-  <div class="coins-row">
-    <div class="coin-box">
-      <p>💰 Cash Coins</p>
-      <h3 id="coins">0</h3>
-    </div>
-
-    <div class="coin-box">
-      <p>🎁 Bonus Coins</p>
-      <h3 id="bonus">0</h3>
-    </div>
-  </div>
+<!-- TOP CARD -->
+<div class="top-card">
+  <h1>💼 My Wallet</h1>
+  <p>Total Coins</p>
+  <h2 id="coins">0</h2>
 </div>
 
-<!-- ACTION BUTTONS (HOME GRID STYLE) -->
+<!-- BUTTON GRID -->
 <div class="grid">
 
-  <div class="game-box deposit" onclick="goDeposit()">
-    <h3>💰</h3>
-    <p>Deposit</p>
+  <div class="btn deposit" onclick="goDeposit()">
+    💰
+    <span>Deposit</span>
   </div>
 
-  <div class="game-box withdraw" onclick="withdraw()">
-    <h3>💸</h3>
-    <p>Withdraw</p>
+  <div class="btn withdraw" onclick="withdraw()">
+    💸
+    <span>Withdraw</span>
   </div>
 
-  <div class="game-box reward" onclick="reward()">
-    <h3>🎁</h3>
-    <p>Rewards</p>
+  <div class="btn reward" onclick="reward()">
+    🎁
+    <span>Rewards</span>
   </div>
 
-  <div class="game-box stats">
-    <h3>📊</h3>
-    <p>Stats</p>
+  <div class="btn stats">
+    📊
+    <span>Stats</span>
   </div>
 
-</div>
-
-<!-- LEVEL BAR -->
-<div class="card">
-  <p>Level Progress</p>
-  <div class="bar">
-    <div class="fill" id="levelBar"></div>
-  </div>
 </div>
 
 <!-- TRANSACTIONS -->
@@ -75,18 +55,20 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
+// redirect
 function goDeposit(){
-window.location.href = "deposit.html";
+  window.location.href = "deposit.html";
 }
 
 function withdraw(){
-  alert("Withdraw page coming");
+  alert("Withdraw page coming soon");
 }
 
 function reward(){
-  alert("Rewards coming");
+  alert("Rewards coming soon");
 }
 
+// load coins
 async function loadWallet(){
 
   const { data: { user } } = await supabaseClient.auth.getUser();
@@ -98,19 +80,11 @@ async function loadWallet(){
 
   let { data } = await supabaseClient
     .from("users")
-    .select("coins, bonus")
+    .select("coins")
     .eq("id", user.id)
     .single();
 
-  let coins = data?.coins ` 0;
-  let bonus = data?.bonus 
- `0;
-
-  document.getElementById("coins").innerText = coins;
-  document.getElementById("bonus").innerText = bonus;
-
-  let percent = Math.min(coins / 1000 * 100, 100);
-  document.getElementById("levelBar").style.width = percent + "%";
+  document.getElementById("coins").innerText = data?.coins || 0;
 }
 
 loadWallet();
