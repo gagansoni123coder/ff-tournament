@@ -29,57 +29,7 @@
 
 <script>
 const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
-);
-
-async function submitDeposit(){
-
-  let amount = document.getElementById("amount").value;
-  let utr = document.getElementById("utr").value;
-
-  if(!amount || !utr){
-    alert("Fill all fields");
-    return;
-  }
-
-  // 🔥 loading show
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("btn").disabled = true;
-
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  let { error } = await supabaseClient.from("deposits").insert([
-    {
-      user_id: user.id,
-      amount: amount,
-      utr: utr,
-      status: "pending"
-    }
-  ]);
-
-  if(error){
-    alert("Error ❌");
-    console.log(error);
-    return;
-  }
-
-  alert("✅ Request Sent!");
-
-  window.location.href = "wallet.html";
-}
-</script>
-  <form onsubmit="submitDeposit(event)">
-  <input type="number" id="amount" placeholder="Enter Amount" required>
-  <input type="text" id="utr" placeholder="Enter UTR" required>
-  <button type="submit">Submit Deposit</button>
-</form>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<script>
-const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
@@ -89,36 +39,38 @@ async function submitDeposit(e) {
   const amount = document.getElementById("amount").value;
   const utr = document.getElementById("utr").value;
 
-  // 🔥 user fetch
   const { data: { user } } = await supabaseClient.auth.getUser();
 
+  console.log("USER:", user);
+
   if (!user) {
-    alert("Login required");
+    alert("Login first");
     return;
   }
 
-  // 🔥 INSERT
-  const { error } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("deposits")
     .insert([
       {
         user_id: user.id,
-        amount: amount,
+        amount: Number(amount),
         utr: utr,
         status: "pending"
       }
     ]);
 
+  console.log("RESPONSE:", data, error);
+
   if (error) {
-    alert("Error: " + error.message);
-    console.log(error);
-  } else {
-    alert("Deposit submitted ✅");
-    window.location.href = "wallet.html";
+    alert(error.message);
+    return;
   }
+
+  alert("Deposit submitted ✅");
 }
 </script>
 
+  
 
 </body>
 </html>
