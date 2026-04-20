@@ -3,71 +3,68 @@ body {
   font-family: Arial;
   background: radial-gradient(circle, #0a0a0a, #1a0033);
   color: white;
-}
-
-.wallet {
   padding: 20px;
 }
 
-/* COINS /
-.coins-section {
-  display: flex;
-  gap: 10px;
-}
-
-.card {
-  flex: 1;
-  background: #111;
-  padding: 20px;
+/* TITLE /
+.title {
   text-align: center;
-  border-radius: 12px;
-  box-shadow: 0 0 15px purple;
+  color: cyan;
+  text-shadow: 0 0 10px cyan;
 }
 
-.bonus {
-  box-shadow: 0 0 15px orange;
+/ BALANCE /
+.balance-box {
+  background: #111;
+  padding: 25px;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 0 20px purple;
+  margin-top: 20px;
+}
+
+.balance-box h2 {
+  font-size: 40px;
 }
 
 / GRID /
 .grid {
-  margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 25px;
 }
 
-.grid button {
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(45deg, purple, blue);
-  color: white;
-  font-size: 15px;
+/ BOX /
+.box {
+  background: #1a0033;
+  padding: 20px;
+  text-align: center;
+  border-radius: 15px;
   cursor: pointer;
+  box-shadow: 0 0 15px purple;
   transition: 0.3s;
 }
 
-.grid button:hover {
-  transform: scale(1.05);
+.box h3 {
+  font-size: 28px;
+  margin-bottom: 10px;
 }
 
-/ REWARD /
-.reward-box {
-  margin-top: 20px;
-  text-align: center;
+/ HOVER EFFECT 🔥 /
+.box:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 25px cyan;
 }
 
-.reward-box button {
-  padding: 15px;
-  background: linear-gradient(45deg, orange, red);
-  border: none;
-  border-radius: 10px;
-  color: white;
+/ CLICK EFFECT /
+.box:active {
+  transform: scale(0.95);
 }
 
 / LEVEL /
-.level {
-  margin-top: 20px;
+.level-box {
+  margin-top: 25px;
 }
 
 .bar {
@@ -80,20 +77,21 @@ body {
 .fill {
   height: 100%;
   width: 0%;
-  background: cyan;
+  background: linear-gradient(90deg, cyan, purple);
 }
 
 / HISTORY */
 .history {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
-.item {
+.history h3 {
+  color: cyan;
+}
+
+#transactions div {
+  background: #1a0033;
   padding: 10px;
   margin-top: 8px;
-  border-radius: 8px;
+  border-radius: 10px;
 }
-
-.green { background: green; }
-.red { background: red; }
-.yellow { background: orange; }
