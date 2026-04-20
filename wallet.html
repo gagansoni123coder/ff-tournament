@@ -46,6 +46,20 @@ function goDeposit(){
 function withdraw(){
   alert("Withdraw system connected hai admin se");
 }
+  function animateCoins(finalCoins) {
+  let current = 0;
+  let step = Math.ceil(finalCoins / 50);
+
+  let interval = setInterval(() => {
+    current += step;
+    if (current >= finalCoins) {
+      current = finalCoins;
+      clearInterval(interval);
+    }
+    document.getElementById("coins").innerText = current;
+  }, 20);
+}
+
 
 </script>
 
