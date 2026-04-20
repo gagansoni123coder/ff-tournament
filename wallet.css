@@ -1,103 +1,80 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: linear-gradient(135deg, #0a0a0a, #1a0033);
+  background: linear-gradient(135deg, #0a001a, #1a0033);
   color: white;
-  padding: 15px;
+  text-align: center;
 }
 
-/* TITLE /
-.title {
-  text-align: center;
+/* TOP CARD /
+.top-card {
+  margin: 20px;
+  padding: 25px;
+  border-radius: 20px;
+  background: #120022;
+  box-shadow: 0 0 25px cyan;
+}
+
+.top-card h1 {
   color: cyan;
-  text-shadow: 0 0 10px cyan;
-}
-
-/ CARD (HOME STYLE) /
-.card {
-  background: #111;
-  padding: 20px;
-  border-radius: 15px;
-  margin-top: 15px;
-  box-shadow: 0 0 15px purple;
-}
-
-/ COINS ROW /
-.coins-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.coin-box {
-  flex: 1;
-  background: #1a0033;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+  text-shadow: 0 0 15px cyan;
 }
 
 / GRID /
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 15px;
+  gap: 20px;
+  padding: 20px;
 }
 
-/ GAME BOX /
-.game-box {
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
+/ BUTTON STYLE 🔥 /
+.btn {
+  background: #120022;
+  border-radius: 20px;
+  padding: 25px;
+  font-size: 20px;
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 0 0 15px cyan;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.game-box h3 {
-  font-size: 28px;
+.btn span {
+  margin-top: 10px;
+  font-size: 16px;
 }
 
-/ DIFFERENT COLORS 🔥 /
+/ HOVER EFFECT /
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px cyan, 0 0 40px cyan;
+}
+
+/ DIFFERENT COLORS /
 .deposit {
-  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  box-shadow: 0 0 15px #00ffcc;
 }
 
 .withdraw {
-  background: linear-gradient(45deg, #ff512f, #dd2476);
+  box-shadow: 0 0 15px #ff4d4d;
 }
 
 .reward {
-  background: linear-gradient(45deg, #f7971e, #ffd200);
+  box-shadow: 0 0 15px gold;
 }
 
 .stats {
-  background: linear-gradient(45deg, #00ff87, #60efff);
+  box-shadow: 0 0 15px #00ccff;
 }
 
-/ HOVER /
-.game-box:hover {
-  transform: scale(1.07);
-}
-
-/ LEVEL BAR /
-.bar {
-  height: 10px;
-  background: #222;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-
-.fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, cyan, purple);
-}
-
-/ TRANSACTIONS */
-#transactions div {
-  background: #1a0033;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 10px;
+/ TRANSACTION CARD */
+.card {
+  margin: 20px;
+  padding: 15px;
+  background: #120022;
+  border-radius: 15px;
+  box-shadow: 0 0 10px purple;
 }
