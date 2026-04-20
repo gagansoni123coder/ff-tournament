@@ -1,9 +1,9 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: radial-gradient(circle, #0a0a0a, #1a0033);
+  background: linear-gradient(135deg, #0a0a0a, #1a0033);
   color: white;
-  padding: 20px;
+  padding: 15px;
 }
 
 /* TITLE /
@@ -13,65 +13,79 @@ body {
   text-shadow: 0 0 10px cyan;
 }
 
-/ BALANCE /
-.balance-box {
+/ CARD (HOME STYLE) /
+.card {
   background: #111;
-  padding: 25px;
-  text-align: center;
+  padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 0 20px purple;
-  margin-top: 20px;
+  margin-top: 15px;
+  box-shadow: 0 0 15px purple;
 }
 
-.balance-box h2 {
-  font-size: 40px;
+/ COINS ROW /
+.coins-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.coin-box {
+  flex: 1;
+  background: #1a0033;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 / GRID /
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-top: 25px;
+  gap: 12px;
+  margin-top: 15px;
 }
 
-/ BOX /
-.box {
-  background: #1a0033;
+/ GAME BOX /
+.game-box {
   padding: 20px;
-  text-align: center;
   border-radius: 15px;
+  text-align: center;
   cursor: pointer;
-  box-shadow: 0 0 15px purple;
   transition: 0.3s;
 }
 
-.box h3 {
+.game-box h3 {
   font-size: 28px;
-  margin-bottom: 10px;
 }
 
-/ HOVER EFFECT 🔥 /
-.box:hover {
+/ DIFFERENT COLORS 🔥 /
+.deposit {
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+}
+
+.withdraw {
+  background: linear-gradient(45deg, #ff512f, #dd2476);
+}
+
+.reward {
+  background: linear-gradient(45deg, #f7971e, #ffd200);
+}
+
+.stats {
+  background: linear-gradient(45deg, #00ff87, #60efff);
+}
+
+/ HOVER /
+.game-box:hover {
   transform: scale(1.07);
-  box-shadow: 0 0 25px cyan;
 }
 
-/ CLICK EFFECT /
-.box:active {
-  transform: scale(0.95);
-}
-
-/ LEVEL /
-.level-box {
-  margin-top: 25px;
-}
-
+/ LEVEL BAR /
 .bar {
   height: 10px;
   background: #222;
   border-radius: 10px;
-  overflow: hidden;
+  margin-top: 10px;
 }
 
 .fill {
@@ -80,15 +94,7 @@ body {
   background: linear-gradient(90deg, cyan, purple);
 }
 
-/ HISTORY */
-.history {
-  margin-top: 30px;
-}
-
-.history h3 {
-  color: cyan;
-}
-
+/ TRANSACTIONS */
 #transactions div {
   background: #1a0033;
   padding: 10px;
