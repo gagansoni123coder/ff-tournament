@@ -19,88 +19,24 @@
   <h3 id="timer">02:00</h3>
 
   <!-- PAID BUTTON -->
-  <button id="paidBtn" onclick="paid()">I HAVE PAID</button>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <button id="paidBtn">I HAVE PAID</button>
 
 <script>
-const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
-);
+document.getElementById("paidBtn").addEventListener("click", async function(){
 
-// ⏳ TIMER
-let time = 120; // 2 min
-
-let x = setInterval(() => {
-
-  let min = Math.floor(time / 60);
-  let sec = time % 60;
-
-  document.getElementById("timer").innerText =
-    ${min}:${sec < 10 ? "0"+sec : sec};
-
-  time--;
-
-  if(time < 0){
-    clearInterval(x);
-    alert("Time expired ⏳");
-    `window.location.href = "wallet.html"`;
-  }
-
-}, 1000);
-
-
-// 💰 PAID BUTTON
-async function paid(){
+  alert("Button working ✅");
 
   let amount = prompt("Enter Amount:");
+  if(!amount) return;
 
-  if(!amount || isNaN(amount)){
-    alert("❌ Valid amount required!");
-    return;
-  }
+  let utr = prompt("Enter UTR:");
+  if(!utr) return;
 
-  let utr = prompt("Enter UTR / Transaction ID:");
+  alert("Done: " + amount + " | " + utr);
 
-  if(!utr){
-    alert("❌ UTR required!");
-    return;
-  }
-
-  let btn = document.getElementById("paidBtn");
-  btn.innerText = "Processing...";
-  btn.disabled = true;
-
-  let user = { id: "test_user" };
-
-  const { data, error } = await supabaseClient
-    .from("deposits")
-    .insert([
-      {
-        user_id: user.id,
-        amount: Number(amount),
-        utr: utr,
-        status: "pending"
-      }
-    ]);
-
-  console.log("RESULT:", data, error);
-
-  if(error){
-    alert("❌ Error: " + error.message);
-    btn.innerText = "I HAVE PAID";
-    btn.disabled = false;
-    return;
-  }
-
-  alert("✅ Payment Submitted!\nWait for admin approval.\nCoins will be added soon 💰");
-
-  window.location.href = "wallet.html";
-}
+});
 </script>
+
 
 </html>
 
