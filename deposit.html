@@ -24,7 +24,7 @@
 <script>
 document.getElementById("paidBtn").addEventListener("click", async function(){
 
-  alert("Button working ✅");
+  alert("ENTER PAYMENT DETAILS");
 
   let amount = prompt("Enter Amount:");
   if(!amount) return;
@@ -32,7 +32,13 @@ document.getElementById("paidBtn").addEventListener("click", async function(){
   let utr = prompt("Enter UTR:");
   if(!utr) return;
 
-  alert("Done: " + amount + " | " + utr);
+  alert("✅ Payment Submitted!\nWait for admin approval.\nCoins will be added soon 💰");
+
+    alert(" redirecting to wallet....);
+          
+  window.location.href = "wallet.html";
+}
+    
 
 });
 </script>
