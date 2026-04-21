@@ -36,17 +36,18 @@ const supabaseClient = supabase.createClient(
 async function submitDeposit(e) {
   e.preventDefault();
 
+  console.log("BUTTON CLICKED ✅");
+
   const amount = document.getElementById("amount").value;
   const utr = document.getElementById("utr").value;
 
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  console.log("USER:", user);
-
-  if (!user) {
-    alert("Login first");
+  if (!amount || !utr) {
+    alert("Fill all fields");
     return;
   }
+
+  // TEMP USER (auth skip kar rahe abhi)
+  const user = { id: "test_user_123" };
 
   const { data, error } = await supabaseClient
     .from("deposits")
@@ -62,14 +63,13 @@ async function submitDeposit(e) {
   console.log("RESPONSE:", data, error);
 
   if (error) {
-    alert(error.message);
+    alert("Error: " + error.message);
     return;
   }
 
   alert("Deposit submitted ✅");
 }
 </script>
-
   
 
 </body>
