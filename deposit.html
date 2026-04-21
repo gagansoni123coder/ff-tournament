@@ -19,7 +19,7 @@
   <h3 id="timer">02:00</h3>
 
   <!-- PAID BUTTON -->
-  <button onclick="paid()">I HAVE PAID</button>
+  <button id="paidBtn" onclick="paid()">I HAVE PAID</button>
 
 </div>
 
@@ -28,7 +28,7 @@
 <script>
 const supabaseClient = supabase.createClient(
   "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
-  "YOUR_ANON_KEY"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
 // ⏳ TIMER
@@ -56,33 +56,47 @@ let x = setInterval(() => {
 // 💰 PAID BUTTON
 async function paid(){
 
-  let utr = prompt("Enter UTR / Transaction ID:");
+  let amount = prompt("Enter Amount:");
 
-  if(!utr){
-    alert("UTR required!");
+  if(!amount || isNaN(amount)){
+    alert("❌ Valid amount required!");
     return;
   }
 
-  // TEMP USER (baad me real user laga denge)
+  let utr = prompt("Enter UTR / Transaction ID:");
+
+  if(!utr){
+    alert("❌ UTR required!");
+    return;
+  }
+
+  let btn = document.getElementById("paidBtn");
+  btn.innerText = "Processing...";
+  btn.disabled = true;
+
   let user = { id: "test_user" };
 
-  const { error } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("deposits")
     .insert([
       {
         user_id: user.id,
-        amount: 100, // fix ya baad me dynamic
+        amount: Number(amount),
         utr: utr,
         status: "pending"
       }
     ]);
 
+  console.log("RESULT:", data, error);
+
   if(error){
-    alert("Error: " + error.message);
+    alert("❌ Error: " + error.message);
+    btn.innerText = "I HAVE PAID";
+    btn.disabled = false;
     return;
   }
 
-  alert("✅ Wait for admin approval\nCoins will be added soon");
+  alert("✅ Payment Submitted!\nWait for admin approval.\nCoins will be added soon 💰");
 
   window.location.href = "wallet.html";
 }
