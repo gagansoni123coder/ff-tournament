@@ -28,6 +28,12 @@ async function loadData(){
         <p>Amount: ₹${d.amount}</p>
         <p>UTR: ${d.utr}</p>
         <p>Status: ${d.status}</p>
+        let statusClass = "";
+
+if(d.status === "pending") statusClass = "pending";
+if(d.status === "approved") statusClass = "approved";
+if(d.status === "rejected") statusClass = "rejected";
+
 
         ${
           d.status === "pending"
