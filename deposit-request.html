@@ -34,22 +34,25 @@ function toggleSidebar(){
 function go(page){
   window.location.href = page;
 }
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
 const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
-    async function loadData(){
+
+async function loadData(){
 
   const { data, error } = await supabaseClient
     .from("deposits")
     .select("*")
     .order("created_at", { ascending: false });
 
-  console.log(data, error);
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
 
-  let container = document.getElementById("data");
+  const container = document.getElementById("data");
   container.innerHTML = "";
 
   if(error){
@@ -57,46 +60,58 @@ const supabaseClient = supabase.createClient(
     return;
   }
 
-  if(data.length === 0){
+  if(!data  data.length === 0){
     container.innerHTML = "<p>No deposits yet 😴</p>";
     return;
   }
 
-  data.forEach(d => {
+  data.forEach(function(d){
 
-    let statusClass = d.status;
+    let actions = "";
+    if(d.status === "pending"){
+      actions =` 
+        <div class="actions">
+          <button class="approve" onclick="approve('${d.uid}', ${d.amount}, '${d.id}')">Approve</button>
+          <button class="reject" onclick="reject('${d.id}')">Reject</button>
+        </div>
+      `;
+    }
 
-    container.innerHTML += `
+    let reason = "";
+    if(d.status === "rejected"){
+      reason = `<p class="rejected">❌ ${d.rejection_reason 
+ ""}</p>;
+    }
+
+    container.innerHTML +=` 
       <div class="card">
         <div class="top">
           <span>👤 ${d.uid}</span>
-          <span class="${statusClass}">${d.status}</span>
+          <span class="${d.status}">${d.status}</span>
         </div>
 
         <p>💰 Amount: ₹${d.amount}</p>
         <p>🧾 UTR: ${d.utr}</p>
 
-        ${
-          d.status === "pending"
-          ? `
-          <div class="actions">
-            <button class="approve" onclick="approve('${d.uid}', ${d.amount}, '${d.id}')">Approve</button>
-            <button class="reject" onclick="reject('${d.id}')">Reject</button>
-          </div>
-          `
-          : ""
-        }
-
-        ${
-          d.status === "rejected"
-          ? <p class="rejected">❌ ${d.rejection_reason || ""}</p>
-          : ""
-        }
+        ${actions}
+        ${reason}
       </div>
     `;
   });
 }
-    loadData();
+
+// AUTO LOAD
+loadData();
+
+
+// DUMMY FUNCTIONS (abhi error avoid ke liye)
+function approve(){
+  alert("Approve clicked");
+}
+
+function reject(){
+  alert("Reject clicked");
+}
 </script>
 
 </body>
