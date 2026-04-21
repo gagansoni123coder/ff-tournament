@@ -21,7 +21,9 @@ h2 {
 
 /* QR /
 .qr {
-  width: 200px;
+  width: 70px;
+  max-width:220px;
+  height:auto;
   margin-bottom: 15px;
 }
 
