@@ -21,8 +21,8 @@ h2 {
 
 /* QR /
 .qr {
-  width: 180px;
-  max-width: 220px;
+  width: 70%;
+  max-width: 200px;
   border-radius: 15px;
   padding: 10px;
   background: white;
