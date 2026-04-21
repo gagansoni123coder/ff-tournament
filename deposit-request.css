@@ -42,14 +42,10 @@ h2 {
 .card p:contains("rejected") {
   color: red;
 }
-
-/ Buttons container /
 .card button {
   margin-top: 10px;
   margin-right: 8px;
 }
-
-/ Approve button /
 button {
   padding: 8px 14px;
   border: none;
@@ -58,8 +54,6 @@ button {
   font-weight: bold;
   transition: 0.3s;
 }
-
-/ Approve /
 button:nth-of-type(1) {
   background: linear-gradient(45deg, #00ffcc, #0099ff);
   color: black;
@@ -69,8 +63,6 @@ button:nth-of-type(1):hover {
   box-shadow: 0 0 15px cyan;
   transform: scale(1.05);
 }
-
-/ Reject /
 button:nth-of-type(2) {
   background: linear-gradient(45deg, #ff0040, #ff6600);
   color: white;
@@ -80,14 +72,10 @@ button:nth-of-type(2):hover {
   box-shadow: 0 0 15px red;
   transform: scale(1.05);
 }
-
-/ Scroll smooth /
 #data {
   max-width: 600px;
   margin: auto;
 }
-
-/ Mobile responsive */
 @media (max-width: 600px) {
   .card {
     padding: 12px;
