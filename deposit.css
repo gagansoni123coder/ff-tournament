@@ -1,46 +1,39 @@
 body {
-  background: linear-gradient(135deg, #0f0f1a, #1a0033);
+  background: linear-gradient(135deg, #0a001a, #1a0033);
   color: white;
-  font-family: sans-serif;
   text-align: center;
+  font-family: Arial;
   padding: 20px;
 }
 
-/* TITLE /
 h2 {
   color: cyan;
   text-shadow: 0 0 10px cyan;
 }
 
-/ BOX /
 .box {
-  background: #1a1a2e;
+  background: #120022;
   padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0,255,255,0.3);
+  border-radius: 20px;
+  box-shadow: 0 0 20px cyan;
   margin-top: 20px;
 }
 
-/ UPI /
-.upi {
-  color: cyan;
+/* QR /
+.qr {
+  width: 200px;
   margin-bottom: 15px;
 }
 
-/ INPUTS /
-input {
-  width: 90%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  font-size: 16px;
+/ TIMER /
+#timer {
+  color: yellow;
+  margin: 15px 0;
+  font-size: 22px;
 }
 
-/ BUTTON /
+/ BUTTON */
 button {
-  margin-top: 15px;
   padding: 12px 25px;
   border: none;
   border-radius: 10px;
@@ -51,18 +44,7 @@ button {
   transition: 0.3s;
 }
 
-/ HOVER EFFECT 🔥 */
 button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px cyan;
-}
-#loading {
-  margin-top: 10px;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
 }
