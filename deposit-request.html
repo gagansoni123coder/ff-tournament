@@ -56,6 +56,69 @@ function toggleSidebar(){
 function go(page){
   window.location.href = page;
 }
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+const supabaseClient = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co/",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
+);
+    async function loadData(){
+
+  const { data, error } = await supabaseClient
+    .from("deposits")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  console.log(data, error);
+
+  let container = document.getElementById("data");
+  container.innerHTML = "";
+
+  if(error){
+    container.innerHTML = "<p>Error loading data ❌</p>";
+    return;
+  }
+
+  if(data.length === 0){
+    container.innerHTML = "<p>No deposits yet 😴</p>";
+    return;
+  }
+
+  data.forEach(d => {
+
+    let statusClass = d.status;
+
+    container.innerHTML += `
+      <div class="card">
+        <div class="top">
+          <span>👤 ${d.uid}</span>
+          <span class="${statusClass}">${d.status}</span>
+        </div>
+
+        <p>💰 Amount: ₹${d.amount}</p>
+        <p>🧾 UTR: ${d.utr}</p>
+
+        ${
+          d.status === "pending"
+          ? `
+          <div class="actions">
+            <button class="approve" onclick="approve('${d.uid}', ${d.amount}, '${d.id}')">Approve</button>
+            <button class="reject" onclick="reject('${d.id}')">Reject</button>
+          </div>
+          `
+          : ""
+        }
+
+        ${
+          d.status === "rejected"
+          ? <p class="rejected">❌ ${d.rejection_reason || ""}</p>
+          : ""
+        }
+      </div>
+    `;
+  });
+}
+    loadData();
 </script>
 
 </body>
