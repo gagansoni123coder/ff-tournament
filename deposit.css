@@ -21,12 +21,13 @@ h2 {
 
 /* QR /
 .qr {
-  width: 70%;
-  max-width: 200px;
-  border-radius: 15px;
-  padding: 10px;
-  background: white;
+  width: 180px !important;
+  height: 180px !important;
+  object-fit: contain;
+  display: block;
+  margin: 10px auto;
 }
+
 
 
 / TIMER /
