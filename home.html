@@ -67,18 +67,22 @@ async function loadUser(uid){
   const { data, error } = await supabaseClient
     .from("users")
     .select("name, coins")
-    .eq("uid", uid)
-    .single();
+    .eq("uid", uid);
 
   if(error){
     console.log(error);
     return;
   }
 
-  document.querySelector(".user-card h2").innerText =
-    Welcome ${data.name || "Player"} 🎮;
+  if(data && data.length > 0){
+    const userData = data[0];
 
-  document.getElementById("coins").innerText = data.coins || 0;
+    document.querySelector(".user-card h2").innerText =
+      Welcome ${userData.name || "Player"} 🎮;
+
+    document.getElementById("coins").innerText =
+      userData.coins || 0;
+  }
 }
 
 
@@ -92,14 +96,13 @@ function realtimeCoins(uid){
       {
         event: "UPDATE",
         schema: "public",
-        table: "users"
+        table: "users",
+        filter: uid=eq.${uid}   // ✅ important
       },
       payload => {
 
-        if(payload.new.uid === uid){
-          document.getElementById("coins").innerText =
-            payload.new.coins;
-        }
+        document.getElementById("coins").innerText =
+          payload.new.coins;
 
       }
     )
@@ -108,6 +111,5 @@ function realtimeCoins(uid){
 
 init();
 </script>
-
 </body>
 </html>
