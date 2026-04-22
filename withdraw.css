@@ -17,12 +17,18 @@ input {
   border-radius: 10px;
   border: none;
 }
-
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  background: orange;
-  font-weight: bold;
+.btn {
+  background: #0ff;
+  color: black;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 15px;
   cursor: pointer;
+  border: none;
+}
+
+.btn:active {
+  transform: scale(0.95);
 }
