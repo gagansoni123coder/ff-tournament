@@ -45,52 +45,7 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-// 🔐 CHECK USER
-async function checkUser(){
-  const { data } = await supabaseClient.auth.getSession();
-  const user = data.session?.user;
-
-  if(!user){
-    window.location.href = "login.html";
-    return;
-  }
-
-  loadCoins(user.id);
-}
-
-// 💰 LOAD COINS
-async function loadCoins(uid){
-
-  const { data, error } = await supabaseClient
-    .from("users")
-    .select("coins")
-    .eq("uid", uid)
-    .single();
-
-  if(error){
-    console.log(error);
-    return;
-  }
-
-  document.getElementById("coins").innerText = data?.coins || 0;
-}
-
-// 🚫 CHECK BAN
-async function checkBan(uid){
-
-  const { data } = await supabaseClient
-    .from("users")
-    .select("banned")
-    .eq("uid", uid)
-    .single();
-
-  if(data?.banned){
-    alert("You are banned 🚫");
-    window.location.href = "index.html";
-  }
-}
-
-// 🔥 INIT
+// 🚀 INIT
 async function init(){
 
   const { data } = await supabaseClient.auth.getSession();
@@ -101,8 +56,54 @@ async function init(){
     return;
   }
 
-  await loadCoins(user.id);
-  await checkBan(user.id);
+  loadUser(user.id);
+  realtimeCoins(user.id);
+}
+
+
+// 👤 LOAD USER DATA
+async function loadUser(uid){
+
+  const { data, error } = await supabaseClient
+    .from("users")
+    .select("name, coins")
+    .eq("uid", uid)
+    .single();
+
+  if(error){
+    console.log(error);
+    return;
+  }
+
+  document.querySelector(".user-card h2").innerText =
+    Welcome ${data.name || "Player"} 🎮;
+
+  document.getElementById("coins").innerText = data.coins || 0;
+}
+
+
+// 🔴 REALTIME COINS UPDATE
+function realtimeCoins(uid){
+
+  supabaseClient
+    .channel("coins-channel")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "users"
+      },
+      payload => {
+
+        if(payload.new.uid === uid){
+          document.getElementById("coins").innerText =
+            payload.new.coins;
+        }
+
+      }
+    )
+    .subscribe();
 }
 
 init();
