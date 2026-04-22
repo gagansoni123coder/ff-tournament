@@ -3,43 +3,96 @@
 <head>
   <title>Deposit</title>
   <link rel="stylesheet" href="deposit.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<h2>💰 Scan & Pay</h2>
+<h1>💰 Deposit</h1>
 
 <div class="box">
+  <img src="qr.png" class="qr">
 
-  <!-- QR IMAGE -->
-  <img src="qr.png" style="width:290px; height:300px; display:block; margin:auto;">
+  <p>Scan & Pay</p>
 
-  <!-- TIMER -->
-  <h3 id="timer">02:00</h3>
+  <p id="timer">05:00</p>
 
-  <!-- PAID BUTTON -->
-  <button id="paidBtn">I HAVE PAID</button>
+  <button onclick="paid()">✅ I HAVE PAID</button>
+</div>
+
+
+<!-- ✅ Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-document.getElementById("paidBtn").addEventListener("click", async function(){
+const supabaseClient = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
+);
 
-  alert("ENTER PAYMENT DETAILS");
+
+// ⏳ TIMER
+let time = 300;
+
+setInterval(()=>{
+  time--;
+
+  let min = Math.floor(time / 60);
+  let sec = time % 60;
+
+  document.getElementById("timer").innerText =`
+    ${min}:${sec < 10 ? "0"+sec : sec}`;
+
+  if(time <= 0){
+    alert("Time expired ⏳");
+    window.location.href = "wallet.html";
+  }
+
+},1000);
+
+
+// 💰 PAID BUTTON
+async function paid(){
 
   let amount = prompt("Enter Amount:");
-  if(!amount) return;
-
   let utr = prompt("Enter UTR:");
-  if(!utr) return;
 
-  alert("✅ Payment Submitted!\nWait for admin approval.\nCoins will be added soon 💰");
-    
+  if(!amount || !utr){
+    alert("Fill all details");
+    return;
+  }
+
+  // 👤 get user
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if(!user){
+    alert("Login first");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // 📥 INSERT
+  const { error } = await supabaseClient
+    .from("deposits")
+    .insert([
+      {
+        uid: user.id,
+        amount: Number(amount),
+        utr: utr,
+        status: "pending"
+      }
+    ]);
+
+  if(error){
+    alert("Error ❌");
+    console.log(error);
+    return;
+  }
+
+  alert("✅ Request sent! Wait for admin approval");
+
   window.location.href = "wallet.html";
-});
+}
 </script>
-
-
-</html>
 
 </body>
 </html>
