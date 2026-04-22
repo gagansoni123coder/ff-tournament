@@ -1,15 +1,15 @@
-.body {
+body {
   background: #0f001f;
   color: white;
   text-align: center;
   font-family: Arial;
 }
 
-.box {
+box {
   margin-top: 50px;
 }
 
-.input {
+input {
   display: block;
   margin: 10px auto;
   padding: 12px;
@@ -17,7 +17,7 @@
   border-radius: 10px;
   border: none;
 }
- .button {
+ button {
   margin-top: 10px;
   margin-right: 5px;
   padding: 8px 12px;
@@ -25,15 +25,15 @@
   border-radius: 8px;
 }
 
-.button:first-child {
+button:first-child {
   background: lime;
 }
 
-.button:last-child {
+button:last-child {
   background: red;
   color: white;
 }
-.btn {
+btn {
   background: #0ff;
   color: black;
   padding: 15px;
@@ -45,6 +45,6 @@
   border: none;
 }
 
-.btn:active {
+btn:active {
   transform: scale(0.95);
 }
