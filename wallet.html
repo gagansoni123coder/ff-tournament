@@ -101,6 +101,17 @@ loadWallet();
 }
 
 loadCoins();
+  
+  supabaseClient
+  .channel("coins")
+  .on(
+    "postgres_changes",
+    { event: "UPDATE", schema: "public", table: "users" },
+    payload => {
+      loadCoins();
+    }
+  )
+  .subscribe();
 </script>
 
 </body>
