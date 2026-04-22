@@ -33,44 +33,33 @@ const supabaseClient = supabase.createClient(
 
 async function sendWithdraw() {
 
-  console.log("Clicked ✅");
-
   let amount = document.getElementById("amount").value;
   let upi = document.getElementById("upi").value;
 
   if (!amount || !upi) {
-    alert("Please fill all details");
+    alert("Fill all details");
     return;
   }
 
-  try {
+  const { error } = await supabaseClient
+    .from("withdraws")
+    .insert([
+      {
+        uid: "test_user",
+        amount: Number(amount),
+        upi: upi,
+        status: "pending"
+      }
+    ]);
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
+  if (error) {
+    console.log(error);
+    alert("Error: " + error.message);
+    return;
+  }
 
-    if (!user) {
-      alert("Login first");
-      return;
-    }
-
-    const { error } = await supabaseClient
-      .from("withdraws")
-      .insert([
-        {
-          uid: user.id,
-          amount: Number(amount),
-          upi: upi,
-          status: "pending"
-        }
-      ]);
-
-    if (error) {
-      console.log(error);
-      alert("Error: " + error.message);
-      return;
-    }
-
-    alert("Withdraw request sent ✅");
-
+  alert("Withdraw request sent ✅");
+}
     document.getElementById("amount").value = "";
     document.getElementById("upi").value = "";
 
