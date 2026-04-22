@@ -1,113 +1,79 @@
 body {
-  margin: 0;
-  background: linear-gradient(135deg, #0a001a, #1a0033);
+  background: linear-gradient(135deg, #0f001f, #1a0033);
   color: white;
   font-family: Arial;
-}
-
-/* ☰ Button /
-.menu-btn {
-  font-size: 24px;
-  padding: 10px;
-  cursor: pointer;
-  background: black;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  border-radius: 8px;
-}
-
-/ Sidebar /
-.sidebar {
-  position: fixed;
-  left: -220px;
-  top: 0;
-  width: 220px;
-  height: 100%;
-  background: #120022;
   padding: 20px;
-  transition: 0.3s;
-  box-shadow: 0 0 20px purple;
 }
 
-.sidebar.active {
-  left: 0;
-}
-
-.sidebar h3 {
-  color: cyan;
+h1 {
   text-align: center;
+  color: #00ffd5;
+  margin-bottom: 20px;
 }
 
-/ Sidebar Buttons /
-.sidebar button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(45deg, #00ffcc, #0099ff);
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
+#data {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.sidebar button:hover {
-  box-shadow: 0 0 10px cyan;
-}
-
-/ Main /
-.main {
-  padding: 20px;
-  margin-left: 20px;
-}
-
-/ Heading /
-h2 {
-  text-align: center;
-  color: cyan;
-}
-
-/ Card /
+/* 🔥 CARD */
 .card {
-  background: rgba(20, 0, 40, 0.9);
+  background: #1a0033;
   padding: 15px;
-  border-radius: 12px;
-  margin-top: 15px;
-  box-shadow: 0 0 10px cyan;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00ffd5;
 }
 
-/ Top /
+/* TOP ROW */
 .top {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-/ Status /
-.pending { color: orange; }
-.approved { color: lime; }
-.rejected { color: red; }
+/* STATUS COLORS */
+.pending {
+  color: orange;
+}
 
-/ Buttons */
+.approved {
+  color: lime;
+}
+
+.rejected {
+  color: red;
+}
+
+/* ACTION BUTTONS */
 .actions {
   margin-top: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 button {
   padding: 8px 12px;
   border: none;
-  border-radius: 6px;
-  margin-right: 5px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: bold;
 }
 
+/* APPROVE BUTTON */
 .approve {
-  background: green;
-  color: white;
+  background: lime;
+  color: black;
 }
 
+/* REJECT BUTTON */
 .reject {
   background: red;
   color: white;
+}
+
+/* REJECT TEXT */
+.rejectText {
+  color: red;
+  margin-top: 8px;
 }
