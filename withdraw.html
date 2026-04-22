@@ -25,37 +25,33 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI");
 
 async function sendWithdraw(){
-alert("button clicked");
-  
+
+  console.log("Clicked ✅");
+
   let amount = document.getElementById("amount").value;
   let upi = document.getElementById("upi").value;
+
+  console.log("Amount:", amount);
+  console.log("UPI:", upi);
 
   if(!amount || !upi){
     alert("Fill all details");
     return;
   }
 
-  const { data: { user } } = await supabaseClient.auth.getUser();
+  // 🔐 GET USER
+  const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+
+  console.log("User:", user);
+  console.log("User Error:", userError);
 
   if(!user){
-    alert("Login first");
+    alert("User not logged in ❌");
     return;
   }
 
-  // check coins
-  let { data } = await supabaseClient
-    .from("users")
-    .select("coins")
-    .eq("uid", user.id)
-    .single();
-
-  if(data.coins < amount){
-    alert("Not enough balance ❌");
-    return;
-  }
-
-  // insert request
-  await supabaseClient
+  // 🚀 INSERT
+  const { data, error } = await supabaseClient
     .from("withdraws")
     .insert([
       {
@@ -66,7 +62,17 @@ alert("button clicked");
       }
     ]);
 
-  alert("✅ Request Sent");
+  console.log("Insert Data:", data);
+  console.log("Insert Error:", error);
+
+  if(error){
+    alert("Error: " + error.message);
+    return;
+  }
+
+  alert("Withdraw Request Sent ✅");
+}
+
 
   window.location.href = "wallet.html";
 }
