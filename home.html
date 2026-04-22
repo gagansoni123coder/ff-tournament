@@ -18,31 +18,14 @@
 
   <div class="card">🏆<br>Tournaments</div>
   <div class="card">⚔<br>1v1 Battle</div>
-  <div class="card">🎁<br>Rewards</div>
-  <div class="card">💰<br>Wallet</div>
-
-  <div class="card">📜<br>History</div>
-  <div class="card">👥<br>Teams</div>
-  <div class="card">📊<br>Leaderboard</div>
-  <div class="card">🎮<br>Games</div>
-
-  <div class="card">🔔<br>Notifications</div>
-  <div class="card">💬<br>Chat</div>
-  <div class="card">⚙<br>Settings</div>
-  <div class="card">👤<br>Profile</div>
-
-</div>
-
-<div class="bottom-nav">
-
-  <a href="home.html">🏠<br>Home</a>
-  <div class="nav-item">📜<br>History</div>
-
-  <div class="play-btn">▶</div>
-
-  <a href="profile.html">👤<br>Profile</a>
-  <div class="nav-item">⚙<br>Settings</div>
-
+  <div class="card"onclick="goTo('rewards.html')">🎁<br>Rewards</div>
+  <div class="card"onclick="goTo('wallet.html')">💰<br>Wallet</div>
+  <div class="card"onclick="goTo('history.html')">📜<br>History</div>
+  <div class="card"onclick="goTo('teams.html')">👥<br>Teams</div>
+  <div class="card"onclick="goTo('leaderboard.html')">📊<br>Leaderboard</div>
+  <div class="card"onclick="goTo('games.html')">🎮<br>Games</div>
+  <div class="card"onclick="goTo('notification.html')">>🔔<br>Notifications</div>
+  <div class="card"onclick="goTo('rewards.html')">👤<br>Profile</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -116,6 +99,11 @@ async function loadUser() {
 
   document.getElementById("coins").innerText = data.coins;
 }
-
+ function goTo(page){
+   window.location.href= page;
+ }
 loadUser();
 </script>
+
+
+
