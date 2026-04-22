@@ -92,6 +92,13 @@ async function paid(){
 
   window.location.href = "wallet.html";
 }
+  await supabaseClient.from("transactions").insert([{
+  uid: uid,
+  type: "deposit",
+  amount: amount,
+  status: "success",
+  message: "Deposit approved"
+}]);
 </script>
 
 </body>
