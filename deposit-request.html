@@ -11,7 +11,6 @@
 
 <div id="data"></div>
 
-<!-- ✅ Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
@@ -47,9 +46,9 @@ async function loadData(){
     let actions = "";
 
     if(d.status === "pending"){
-      actions = `
+      actions =` 
         <div class="actions">
-          <button class="approve" onclick="approve('${d.id}', '${d.uid}', ${d.amount})">Approve</button>
+          <button class="approve" onclick="approveDeposit('${d.id}', '${d.uid}', ${d.amount})">Approve</button>
           <button class="reject" onclick="reject('${d.id}')">Reject</button>
         </div>
       `;
@@ -57,10 +56,10 @@ async function loadData(){
 
     let reason = "";
     if(d.status === "rejected"){
-      reason =` <p class="rejectText">❌ ${d.rejection_reason || ""}</p>`;
+      reason = `<p class="rejectText">❌ ${d.rejection_reason || ""}</p>`;
     }
 
-    container.innerHTML +=` 
+    container.innerHTML +=`  
       <div class="card">
         <div class="top">
           <span>👤 ${d.uid}</span>
@@ -79,16 +78,15 @@ async function loadData(){
 
 loadData();
 
-  // ✅ APPROVE FUNCTION
+
+// ✅ APPROVE
 async function approveDeposit(id, uid, amount){
 
-  // 1. status update
   await supabaseClient
     .from("deposits")
     .update({ status: "approved" })
     .eq("id", id);
 
-  // 2. current coins
   let { data } = await supabaseClient
     .from("users")
     .select("coins")
@@ -97,19 +95,18 @@ async function approveDeposit(id, uid, amount){
 
   let coins = data?.coins || 0;
 
-  // 3. add coins
   await supabaseClient
     .from("users")
     .update({ coins: coins + amount })
     .eq("uid", uid);
 
   alert("Deposit Approved ✅");
-}
 
   loadData();
+}
 
 
-// ❌ REJECT FUNCTION
+// ❌ REJECT
 async function reject(id){
 
   let reason = prompt("Enter reject reason:");
@@ -125,8 +122,8 @@ async function reject(id){
   alert("❌ Rejected");
 
   loadData();
+}
+</script>
 
-  </script>
-  
 </body>
 </html>
