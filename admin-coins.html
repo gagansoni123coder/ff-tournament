@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Coins Control</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<h1>🛠 Admin Coin Control</h1>
+
+<div class="card">
+  <input type="text" id="uid" placeholder="Enter User UID">
+  <input type="number" id="amount" placeholder="Enter Amount">
+
+  <button onclick="addCoins()">➕ Add Coins</button>
+  <button onclick="removeCoins()">➖ Deduct Coins</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "YOUR_ANON_KEY"
+);
+
+// ➕ ADD COINS
+async function addCoins(){
+
+  let uid = document.getElementById("uid").value;
+  let amount = Number(document.getElementById("amount").value);
+
+  if(!uid || !amount){
+    alert("Fill all fields");
+    return;
+  }
+
+  let { data } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("uid", uid)
+    .single();
+
+  let coins = data?.coins || 0;
+
+  await supabaseClient
+    .from("users")
+    .update({ coins: coins + amount })
+    .eq("uid", uid);
+
+  alert("Coins Added ✅");
+}
+
+
+// ➖ REMOVE COINS
+async function removeCoins(){
+
+  let uid = document.getElementById("uid").value;
+  let amount = Number(document.getElementById("amount").value);
+
+  if(!uid || !amount){
+    alert("Fill all fields");
+    return;
+  }
+
+  let { data } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("uid", uid)
+    .single();
+
+  let coins = data?.coins || 0;
+
+  if(coins < amount){
+    alert("Not enough coins ❌");
+    return;
+  }
+
+  await supabaseClient
+    .from("users")
+    .update({ coins: coins - amount })
+    .eq("uid", uid);
+
+  alert("Coins Deducted 💸");
+}
+</script>
+
+</body>
+</html>
