@@ -56,9 +56,9 @@ loadData();
 
 
 // ✅ APPROVE
-async function approve(id, uid, amount){
+async function approveWithdraw(id, uid, amount){
 
-  // update status
+  // status
   await supabaseClient
     .from("withdraws")
     .update({ status: "approved" })
@@ -71,15 +71,16 @@ async function approve(id, uid, amount){
     .eq("uid", uid)
     .single();
 
-  let coins = data.coins || 0;
+  let coins = data?.coins || 0;
 
-  // deduct coins
+  // deduct
   await supabaseClient
     .from("users")
     .update({ coins: coins - amount })
     .eq("uid", uid);
 
-  alert("✅ Approved");
+  alert("Withdraw Approved 💸");
+}
 
   loadData();
 }
