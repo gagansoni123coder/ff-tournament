@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>History</title>
+  <link rel="stylesheet" href="history.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<!-- 🔙 BACK BUTTON -->
+<button class="back-btn" onclick="goBack()">⬅ Back</button>
+
+<h1>📜 Transaction History</h1>
+
+<div id="history"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+const supabaseClient = supabase.createClient(
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
+);
+
+// 🔙 BACK
+function goBack(){
+  window.location.href = "home.html";
+}
+
+// 📜 LOAD HISTORY
+async function loadHistory(){
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("transactions")
+    .select("*")
+    .eq("uid", user.id)
+    .order("created_at", { ascending: false });
+
+  const box = document.getElementById("history");
+  box.innerHTML = "";
+
+  if(error){
+    box.innerHTML = "<p>Error loading ❌</p>";
+    console.log(error);
+    return;
+  }
+
+  if(!data || data.length === 0){
+    box.innerHTML = "<p>No history yet 😴</p>";
+    return;
+  }
+
+  data.forEach(t => {
+
+    let sign = t.amount > 0 ? "+" : "";
+    let color = t.amount > 0 ? "green" : "red";
+
+    box.innerHTML +=` 
+      <div class="card">
+        <div class="top">
+          <span class="type">${t.type.toUpperCase()}</span>
+          <span class="status ${t.status}">${t.status}</span>
+        </div>
+
+        <p class="msg">${t.message || ""}</p>
+
+        <p class="amount ${color}">
+          ${sign}${t.amount}
+        </p>
+
+        <small>
+          ${new Date(t.created_at).toLocaleString()}
+        </small>
+      </div>
+    `;
+  });
+}
+
+// 🔴 REALTIME UPDATE
+function realtimeHistory(uid){
+  supabaseClient
+    .channel("history-channel")
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "transactions",
+        filter: uid=eq.${uid}
+      },
+      payload => {
+        loadHistory();
+      }
+    )
+    .subscribe();
+}
+
+// 🚀 INIT
+async function init(){
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  loadHistory();
+  realtimeHistory(user.id);
+}
+
+init();
+</script>
+
+</body>
+</html>
