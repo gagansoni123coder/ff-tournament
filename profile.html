@@ -2,89 +2,74 @@
 <html>
 <head>
   <title>Profile</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="profile.css">
 </head>
 
 <body>
 
-<div class="profile-container">
+<div class="container">
 
-  <!-- Top -->
-  <div class="top-bar">
-    <h2>👋 Welcome</h2>
-    <div class="coins-box">💰 0</div>
-  </div>
+  <h1>👤 Profile</h1>
 
-  <!-- Avatar -->
-  <div class="profile-header">
-    <img src="https://i.pravatar.cc/150" class="avatar">
-    <h2 id="name">Loading...</h2>
-    <p id="uid">UID: ---</p>
-  </div>
+  <div class="card">
+    <p><strong>Name:</strong> <span id="name">Loading...</span></p>
+    <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+    <p><strong>UID:</strong> <span id="uid">Loading...</span></p>
+    <p><strong>Coins:</strong> <span id="coins">Loading...</span></p>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div>
-      <h3>0</h3>
-      <p>Matches</p>
-    </div>
-    <div>
-      <h3>0</h3>
-      <p>Kills</p>
-    </div>
-    <div>
-      <h3>0</h3>
-      <p>Coins</p>
-    </div>
-  </div>
-
-  <!-- Menu -->
-  <div class="menu">
-    <div class="menu-item">👤 My Profile</div>
-    <a href="wallet.html" class="menu-item">💼 Wallet</a>
-    <div class="menu-item">🎮 My Matches</div>
-    <div class="menu-item">🏆 Leaderboard</div>
-    <div class="menu-item">🎁 Rewards</div>
-    <div class="menu-item">📢 Announcement</div>
-    <div class="menu-item">⚙ Settings</div>
-    <div class="menu-item logout" onclick="logout()">🚪 Logout</div>
+    <button onclick="logout()">Logout</button>
   </div>
 
 </div>
 
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 const supabaseClient = supabase.createClient(
-  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "https://gkgqsfkxmmusrmczoyuk.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-  function openwallet() {
-    window.href="wallet.html";
-  }
-    
-// user data load
-async function loadProfile() {
+
+// 🔥 LOAD PROFILE
+async function loadProfile(){
+
   const { data: { user } } = await supabaseClient.auth.getUser();
 
-  if (!user) {
+  if(!user){
+    alert("Not logged in");
     window.location.href = "login.html";
     return;
   }
 
-  // name email
-  document.getElementById("name").innerText = user.user_metadata.name  "User";
-  document.getElementById("uid").innerText = "UID: " + (user.user_metadata.uid 
- "N/A");
+  // 👇 auth se basic info
+  document.getElementById("email").innerText = user.email;
+  document.getElementById("uid").innerText = user.id;
+
+  // 👇 users table se extra data
+  const { data, error } = await supabaseClient
+    .from("users")
+    .select("*")
+    .eq("uid", user.id)
+    .single();
+
+  console.log(data, error);
+
+  if(data){
+    document.getElementById("name").innerText = data.name || "No Name";
+    document.getElementById("coins").innerText = data.coins || 0;
+  } else {
+    document.getElementById("name").innerText = "Not Found";
+    document.getElementById("coins").innerText = "0";
+  }
+
 }
 
 loadProfile();
 
-// logout
-async function logout() {
+
+// 🚪 LOGOUT
+async function logout(){
   await supabaseClient.auth.signOut();
   window.location.href = "login.html";
 }
