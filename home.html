@@ -27,6 +27,11 @@
   <div class="card"onclick="goTo('notification.html')">>🔔<br>Notifications</div>
   <div class="card"onclick="goTo('rewards.html')">👤<br>Profile</div>
 </div>
+  <script>
+    function goTo(page){
+   window.location.href= page;
+ }
+  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
@@ -99,9 +104,7 @@ async function loadUser() {
 
   document.getElementById("coins").innerText = data.coins;
 }
- function goTo(page){
-   window.location.href= page;
- }
+
 loadUser();
 </script>
 
