@@ -26,16 +26,15 @@
 
 <script>
 const supabaseClient = supabase.createClient(
-  "https://gkgqsfkxmmusrmczoyuk.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI");
+  "https://ggkqsfkxmmusrmczoyuk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI",
   {
-auth: {
-  persistSession: true,
-  autoRefreshToken: true
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true
+    }
   }
- }
 );
-  
 
 // 🔥 LOAD PROFILE
 async function loadProfile(){
@@ -48,11 +47,11 @@ async function loadProfile(){
     return;
   }
 
-  // 👇 auth se basic info
+  // 👇 auth data
   document.getElementById("email").innerText = user.email;
   document.getElementById("uid").innerText = user.id;
 
-  // 👇 users table se extra data
+  // 👇 DB data
   const { data, error } = await supabaseClient
     .from("users")
     .select("*")
@@ -68,11 +67,9 @@ async function loadProfile(){
     document.getElementById("name").innerText = "Not Found";
     document.getElementById("coins").innerText = "0";
   }
-
 }
 
 loadProfile();
-
 
 // 🚪 LOGOUT
 async function logout(){
@@ -80,6 +77,7 @@ async function logout(){
   window.location.href = "login.html";
 }
 </script>
+
 
 </body>
 </html>
