@@ -63,7 +63,7 @@ async function init(){
 
 // 👤 LOAD USER DATA
 async function loadUser(uid){
-
+  
   const { data, error } = await supabaseClient
     .from("users")
     .select("name, coins")
