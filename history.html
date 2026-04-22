@@ -93,7 +93,7 @@ function realtimeHistory(uid){
         event: "INSERT",
         schema: "public",
         table: "transactions",
-        filter: uid=eq.${uid}
+        filter: `uid=eq.${uid}`
       },
       payload => {
         loadHistory();
