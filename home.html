@@ -7,6 +7,7 @@
 </head>
 
 <body>
+
 <header>🔥 SONIE ESPORTS DASHBOARD</header>
 
 <div class="user-card">
@@ -16,98 +17,96 @@
 
 <div class="grid">
 
-  <div class="card">🏆<br>Tournaments</div>
-  <div class="card">⚔<br>1v1 Battle</div>
-  <div class="card"onclick="goTo('rewards.html')">🎁<br>Rewards</div>
-  <div class="card"onclick="goTo('wallet.html')">💰<br>Wallet</div>
-  <div class="card"onclick="goTo('history.html')">📜<br>History</div>
-  <div class="card"onclick="goTo('teams.html')">👥<br>Teams</div>
-  <div class="card"onclick="goTo('leaderboard.html')">📊<br>Leaderboard</div>
-  <div class="card"onclick="goTo('games.html')">🎮<br>Games</div>
-  <div class="card"onclick="goTo('notification.html')">>🔔<br>Notifications</div>
-  <div class="card"onclick="goTo('rewards.html')">👤<br>Profile</div>
-</div>
-  <script>
-    function goTo(page){
-   window.location.href= page;
- }
-  </script>
+  <div class="card" onclick="goTo('tournaments.html')">🏆<br>Tournaments</div>
+  <div class="card" onclick="goTo('battle.html')">⚔<br>1v1 Battle</div>
+  <div class="card" onclick="goTo('rewards.html')">🎁<br>Rewards</div>
+  <div class="card" onclick="goTo('wallet.html')">💰<br>Wallet</div>
+  <div class="card" onclick="goTo('history.html')">📜<br>History</div>
+  <div class="card" onclick="goTo('teams.html')">👥<br>Teams</div>
+  <div class="card" onclick="goTo('leaderboard.html')">📊<br>Leaderboard</div>
+  <div class="card" onclick="goTo('games.html')">🎮<br>Games</div>
+  <div class="card" onclick="goTo('notification.html')">🔔<br>Notifications</div>
+  <div class="card" onclick="goTo('profile.html')">👤<br>Profile</div>
 
+</div>
+
+<script>
+function goTo(page){
+  window.location.href = page;
+}
+</script>
+
+<!-- ✅ SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-const supabase = supabase.createClient(
+const supabaseClient = supabase.createClient(
   "https://ggkqsfkxmmusrmczoyuk.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
-</script>
-<h2>Coins: <span id="coins"></span></h2>
 
-<script>
-let user = JSON.parse(localStorage.getItem("user"));
+// 🔐 CHECK USER
+async function checkUser(){
+  const { data } = await supabaseClient.auth.getSession();
+  const user = data.session?.user;
 
-document.getElementById("coins").innerText = user.coins;
-
-if (user.banned) {
-  alert("You are banned 🚫");
-  window.location.href = "index.html";
-}
-</script>
-<script>
-const supabase = supabase.createClient("https://ggkqsfkxmmusrmczoyuk.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI");
-
-async function checkUser() {
-  const { data } = await supabase.auth.getUser();
-
-  if (!data.user) {
+  if(!user){
     window.location.href = "login.html";
+    return;
   }
+
+  loadCoins(user.id);
 }
 
-checkUser();
-</script>
-<script>
-const supabase = supabase.createClient("YOUR_URL", "YOUR_ANON_KEY");
+// 💰 LOAD COINS
+async function loadCoins(uid){
 
-async function checkBan() {
-  const { data: userData } = await supabase.auth.getUser();
-
-  const { data } = await supabase
+  const { data, error } = await supabaseClient
     .from("users")
-    .select("banned")
-    .eq("id", userData.user.id)
+    .select("coins")
+    .eq("uid", uid)
     .single();
 
-  if (data.banned) {
+  if(error){
+    console.log(error);
+    return;
+  }
+
+  document.getElementById("coins").innerText = data?.coins || 0;
+}
+
+// 🚫 CHECK BAN
+async function checkBan(uid){
+
+  const { data } = await supabaseClient
+    .from("users")
+    .select("banned")
+    .eq("uid", uid)
+    .single();
+
+  if(data?.banned){
     alert("You are banned 🚫");
     window.location.href = "index.html";
   }
 }
 
-checkBan();
+// 🔥 INIT
+async function init(){
 
-async function loadUser() {
-  const { data: auth } = await supabaseClient.auth.getUser();
+  const { data } = await supabaseClient.auth.getSession();
+  const user = data.session?.user;
 
-  if (!auth.user) {
+  if(!user){
     window.location.href = "login.html";
     return;
   }
 
-  const userId = auth.user.id;
-
-  const { data } = await supabaseClient
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  document.getElementById("coins").innerText = data.coins;
+  await loadCoins(user.id);
+  await checkBan(user.id);
 }
 
-loadUser();
+init();
 </script>
 
 </body>
 </html>
-
