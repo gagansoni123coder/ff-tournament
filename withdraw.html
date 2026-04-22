@@ -26,7 +26,8 @@ const supabaseClient = supabase.createClient(
 );
 
 async function sendWithdraw(){
-
+console.log("button clicked");
+  
   let amount = document.getElementById("amount").value;
   let upi = document.getElementById("upi").value;
 
