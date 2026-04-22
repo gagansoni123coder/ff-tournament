@@ -12,7 +12,7 @@
 <div class="top-card">
   <h1>💼 My Wallet</h1>
   <p>Total Coins</p>
-  <h2 id="coins">0</h2>
+  <h2>💰 Coins: <span id="coins">0</span></h2>
 </div>
 
 <!-- BUTTON GRID -->
@@ -83,6 +83,24 @@ async function loadWallet(){
 }
 
 loadWallet();
+  
+ async function loadCoins(){
+
+  const { data } = await supabaseClient.auth.getSession();
+  const user = data.session?.user;
+
+  if(!user) return;
+
+  const { data: userData } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("uid", user.id)
+    .single();
+
+  document.getElementById("coins").innerText = userData?.coins || 0;
+}
+
+loadCoins();
 </script>
 
 </body>
