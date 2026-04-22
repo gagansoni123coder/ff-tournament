@@ -40,7 +40,6 @@ async function sendWithdraw() {
 
   if (!amount || !upi) {
     alert("Fill all details");
-    return;
   }
 
   const { error } = await supabaseClient
