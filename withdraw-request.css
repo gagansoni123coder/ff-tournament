@@ -1,0 +1,30 @@
+body {
+  background: #0f001f;
+  color: white;
+  font-family: Arial;
+  padding: 20px;
+}
+
+.card {
+  background: #1a0033;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+button {
+  margin-top: 10px;
+  margin-right: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+}
+
+button:first-child {
+  background: lime;
+}
+
+button:last-child {
+  background: red;
+  color: white;
+}
