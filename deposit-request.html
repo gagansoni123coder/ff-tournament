@@ -1,39 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PENDING DEPOSIT REQUESTS</title>
+  <title>Admin Deposit Requests</title>
   <link rel="stylesheet" href="deposit.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<!-- ☰ Toggle Button -->
-<div class="menu-btn" onclick="toggleSidebar()">☰</div>
+<h1>💰 Deposit Requests</h1>
 
-<!-- Sidebar -->
-<div id="sidebar" class="sidebar">
-  <h3>🎮 Admin</h3>
+<div id="data"></div>
 
-  <button onclick="go('dashboard.html')">🏠 Dashboard</button>
-  <button onclick="go('deposit-request.html')">💰 Deposits</button>
-  <button onclick="go('withdraw.html')">💸 Withdraw</button>
-  <button onclick="go('users.html')">👤 Users</button>
-</div>
-
-<!-- Main Content -->
-<div class="main">
-
-  <h2>💰 Deposit Requests</h2>
-
-<script>
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("active");
-}
-
-function go(page){
-  window.location.href = page;
-}
+<!-- ✅ Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
@@ -42,6 +20,7 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
+// 🔥 LOAD DATA
 async function loadData(){
 
   const { data, error } = await supabaseClient
@@ -49,18 +28,16 @@ async function loadData(){
     .select("*")
     .order("created_at", { ascending: false });
 
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
-
   const container = document.getElementById("data");
   container.innerHTML = "";
 
   if(error){
-    container.innerHTML = "<p>Error loading data ❌</p>";
+    container.innerHTML = "<p>Error loading ❌</p>";
+    console.log(error);
     return;
   }
 
-  if(!data.length === 0){
+  if(!data || data.length === 0){
     container.innerHTML = "<p>No deposits yet 😴</p>";
     return;
   }
@@ -68,10 +45,11 @@ async function loadData(){
   data.forEach(function(d){
 
     let actions = "";
+
     if(d.status === "pending"){
-      actions =` 
+      actions = `
         <div class="actions">
-          <button class="approve" onclick="approve('${d.uid}', ${d.amount}, '${d.id}')">Approve</button>
+          <button class="approve" onclick="approve('${d.id}', '${d.uid}', ${d.amount})">Approve</button>
           <button class="reject" onclick="reject('${d.id}')">Reject</button>
         </div>
       `;
@@ -79,8 +57,7 @@ async function loadData(){
 
     let reason = "";
     if(d.status === "rejected"){
-      reason = `<p class="rejected">❌ ${d.rejection_reason 
- ""}</p>;
+      reason =` <p class="rejectText">❌ ${d.rejection_reason || ""}</p>`;
     }
 
     container.innerHTML +=` 
@@ -100,17 +77,57 @@ async function loadData(){
   });
 }
 
-// AUTO LOAD
 loadData();
 
 
-// DUMMY FUNCTIONS (abhi error avoid ke liye)
-function approve(){
-  alert("Approve clicked");
+// ✅ APPROVE FUNCTION
+async function approve(id, uid, amount){
+
+  alert("Approving...");
+
+  // 1. update deposit status
+  await supabaseClient
+    .from("deposits")
+    .update({ status: "approved" })
+    .eq("id", id);
+
+  // 2. get current coins
+  let { data } = await supabaseClient
+    .from("users")
+    .select("coins")
+    .eq("uid", uid)
+    .single();
+
+  let currentCoins = data?.coins || 0;
+
+  // 3. add coins
+  await supabaseClient
+    .from("users")
+    .update({ coins: currentCoins + amount })
+    .eq("uid", uid);
+
+  alert("✅ Approved & Coins Added");
+
+  loadData();
 }
 
-function reject(){
-  alert("Reject clicked");
+
+// ❌ REJECT FUNCTION
+async function reject(id){
+
+  let reason = prompt("Enter reject reason:");
+
+  await supabaseClient
+    .from("deposits")
+    .update({ 
+      status: "rejected",
+      rejection_reason: reason
+    })
+    .eq("id", id);
+
+  alert("❌ Rejected");
+
+  loadData();
 }
 </script>
 
