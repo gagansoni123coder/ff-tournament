@@ -81,32 +81,31 @@ loadData();
 
 
 // ✅ APPROVE FUNCTION
-async function approve(id, uid, amount){
+async function approveDeposit(id, uid, amount){
 
-  alert("Approving...");
-
-  // 1. update deposit status
+  // 1. status update
   await supabaseClient
     .from("deposits")
     .update({ status: "approved" })
     .eq("id", id);
 
-  // 2. get current coins
+  // 2. current coins
   let { data } = await supabaseClient
     .from("users")
     .select("coins")
     .eq("uid", uid)
     .single();
 
-  let currentCoins = data?.coins || 0;
+  let coins = data?.coins || 0;
 
   // 3. add coins
   await supabaseClient
     .from("users")
-    .update({ coins: currentCoins + amount })
+    .update({ coins: coins + amount })
     .eq("uid", uid);
 
-  alert("✅ Approved & Coins Added");
+  alert("Deposit Approved ✅");
+}
 
   loadData();
 }
