@@ -50,45 +50,42 @@
 
   </div>  <!-- Supabase -->  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <script>
     const supabaseUrl = "https://ggkqsfkxmmusrmczoyuk.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg";
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    const form = document.getElementById("registerForm");
+const form = document.getElementById("registerForm");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const password = document.getElementById("password").value;
-      const refer = document.getElementById("refer").value;
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const password = document.getElementById("password").value;
+  const refer = document.getElementById("refer").value;
 
-      // Check existing user
-      const { data: existing, error: checkError } = await supabase
-        .from("registrations")
-        .select("id")
-        .or(email.eq.${email},phone.eq.${phone})
-        .limit(1);
+  // check existing account
+  const { data: existing } = await supabase
+    .from("registrations")
+    .select("*")
+    .or(email.eq.${email},phone.eq.${phone});
 
-      if (existing && existing.length > 0) {
-        alert("Account already exists 😤");
-        return;
-      }
+  if (existing.length > 0) {
+    alert("Account already exists 😤");
+    return;
+  }
 
-      // Insert new user
-      const { error } = await supabase
-        .from("registrations")
-        .insert([
-          { name, email, phone, password, refer }
-        ]);
+  // insert data
+  const { error } = await supabase
+    .from("registrations")
+    .insert([{ name, email, phone, password, refer }]);
 
-      if (error) {
-        alert("Error: " + error.message);
-      } else {
-        alert("Registration Successful 🔥");
-        form.reset();
-      }
-    });
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Registered Successfully 🔥");
+    form.reset();
+  }
+});
   </script></body>
 </html>/*
