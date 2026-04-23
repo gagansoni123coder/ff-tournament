@@ -53,13 +53,7 @@ async function sendWithdraw() {
         status: "pending"
       }
     ]);
-
-  if (error) {
-    console.log(error);
-    alert("Error: " + error.message);
-  return;
-  }
-}
+  
   alert("Withdraw request sent ✅");
 }
     document.getElementById("amount").value = "";
