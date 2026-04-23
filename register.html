@@ -72,7 +72,7 @@ form.addEventListener("submit", async (e) => {
   const { data: existing, error: checkError } = await supabase
     .from("users")
     .select("id")
-    .or(email.eq.${email},phone.eq.${phone})
+    .or(`email.eq.${email},phone.eq.${phone}`)
     .maybeSingle();
 
   if (checkError) {
