@@ -1,7 +1,7 @@
 {
   "name": "SoniX Esports",
   "short_name": "SoniX",
-  "start_url": "/home.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#6a00ff",
