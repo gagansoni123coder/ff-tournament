@@ -43,7 +43,7 @@ async function sendWithdraw() {
     alert("Fill all details");
   }
 
- const { error } = async await supabaseClient
+ const { error } = supabaseClient
     .from("withdraws")
     .insert([
       {
