@@ -49,9 +49,12 @@
 </form>
 
   </div>  <!-- Supabase -->  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-  <script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
 const supabaseUrl = "https://ggkqsfkxmmusrmczoyuk.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI";
+
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 const form = document.getElementById("registerForm");
@@ -65,29 +68,38 @@ form.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
   const refer = document.getElementById("refer").value;
 
-  // check existing account
-  const { data: existing } = await supabase
+  // 🔥 CHECK EXISTING USER (SAFE FIX)
+  const { data: existing, error: checkError } = await supabase
     .from("users")
     .select("id")
-    .or(`email.eq.${email},phone.eq.${phone}`);
+    .or(email.eq.${email},phone.eq.${phone})
+    .maybeSingle();
 
-  if (existing.length > 1) {
+  if (checkError) {
+    alert("Error checking user: " + checkError.message);
+    return;
+  }
+
+  if (existing) {
     alert("Account already exists 😤");
     return;
   }
 
-  // insert data
+  // 🔥 INSERT USER
   const { error } = await supabase
-    .from("registrations")
-    .insert([{ name, email, phone, password, refer }]);
+    .from("users")
+    .insert([
+      { name, email, phone, password, refer }
+    ]);
 
   if (error) {
-    alert(error.message);
+    alert("Error: " + error.message);
   } else {
     alert("Registered Successfully 🔥");
     window.location.href = "home.html";
   }
 });
-  </script>
+</script>
+
 </body>
 </html>/*
