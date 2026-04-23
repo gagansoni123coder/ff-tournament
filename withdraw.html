@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Withdraw</title>
 <link rel="stylesheet" href="withdraw.css">
+<link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -69,6 +70,12 @@ async function sendWithdraw() {
     alert("Something went wrong");
   }
 
+}
+</script>
+  
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
 }
 </script>
 
