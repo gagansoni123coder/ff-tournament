@@ -1,20 +1,21 @@
 {
-  "name": "Sonie Esports",
-  "short_name": "Sonie",
+  "name": "SoniX Esports",
+  "short_name": "SoniX",
   "start_url": "/home.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#6a00ff",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "logo.png",
       "sizes": "192x192",
-      "type": "logo/png"
+      "type": "image/png"
     },
     {
       "src": "logo.png",
       "sizes": "512x512",
-      "type": "logo/png"
+      "type": "image/png"
     }
   ]
 }
