@@ -3,85 +3,130 @@
 <head>
   <title>Profile</title>
   <link rel="stylesheet" href="profile.css">
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>👤 Profile</h1>
+  <!-- 👤 PROFILE CARD -->
+  <div class="profile-card">
+    <h2 id="name">Loading...</h2>
+    <p>UID: <span id="uid">...</span></p>
+    <p>Email: <span id="email">...</span></p>
+    <p>Coins: <span id="coins">0</span></p>
+  </div>
 
-  <div class="card">
-    <p><strong>Name:</strong> <span id="name">Loading...</span></p>
-    <p><strong>Email:</strong> <span id="email">Loading...</span></p>
-    <p><strong>UID:</strong> <span id="uid">Loading...</span></p>
-    <p><strong>Coins:</strong> <span id="coins">Loading...</span></p>
+  <!-- ⚙️ ACTION BUTTONS -->
+  <div class="actions">
 
-    <button onclick="logout()">Logout</button>
+    <button onclick="goTo('wallet.html')">💰 Wallet</button>
+    <button onclick="goTo('history.html')">📜 History</button>
+    <button onclick="goTo('rewards.html')">🎁 Rewards</button>
+    <button onclick="goTo('support.html')">📞 Support</button>
+    <button onclick="goTo('terms.html')">📄 Terms</button>
+    
+    <button class="logout" onclick="logout()">🚪 Logout</button>
+
   </div>
 
 </div>
 
+<!-- 🔙 BACK BUTTON -->
+<button class="back" onclick="goTo('home.html')">⬅ Back</button>
+
+
+<!-- ✅ SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
 const supabaseClient = supabase.createClient(
   "https://ggkqsfkxmmusrmczoyuk.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI",
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true
-    }
-  }
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-// 🔥 LOAD PROFILE
-async function loadProfile(){
+// 🚀 INIT
+async function init(){
 
-  const { data: { user } } = await supabaseClient.auth.getUser();
+  const { data } = await supabaseClient.auth.getSession();
+  const user = data.session?.user;
 
   if(!user){
-    alert("Not logged in");
     window.location.href = "login.html";
     return;
   }
 
-  // 👇 auth data
-  document.getElementById("email").innerText = user.email;
-  document.getElementById("uid").innerText = user.id;
+  loadProfile(user.id);
+  realtimeCoins(user.id);
+}
 
-  // 👇 DB data
+
+// 👤 LOAD PROFILE
+async function loadProfile(uid){
+
+  document.getElementById("uid").innerText = uid;
+
   const { data, error } = await supabaseClient
     .from("users")
     .select("*")
-    .eq("uid", user.id)
-    .single();
+    .eq("uid", uid)
+    .maybeSingle();   // ❗ FIX: no more 406 error
 
-  console.log(data, error);
-
-  if(data){
-    document.getElementById("name").innerText = data.name || "No Name";
-    document.getElementById("coins").innerText = data.coins || 0;
-  } else {
-    document.getElementById("name").innerText = "Not Found";
-    document.getElementById("coins").innerText = "0";
+  if(error){
+    console.log(error);
+    return;
   }
+
+  if(!data){
+    document.getElementById("name").innerText = "New Player";
+    document.getElementById("coins").innerText = 0;
+    return;
+  }
+
+  document.getElementById("name").innerText = data.name || "Player";
+  document.getElementById("coins").innerText = data.coins || 0;
 }
-loadProfile();
-  setInterval(loadProfile, 3000);
+
+
+// 🔴 REALTIME COINS
+function realtimeCoins(uid){
+
+  supabaseClient
+    .channel("profile-coins")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "users"
+      },
+      payload => {
+
+        if(payload.new.uid === uid){
+          document.getElementById("coins").innerText = payload.new.coins;
+        }
+
+      }
+    )
+    .subscribe();
+}
+
+
+// 🔁 NAVIGATION
+function goTo(page){
+  window.location.href = page;
+}
+
 
 // 🚪 LOGOUT
 async function logout(){
   await supabaseClient.auth.signOut();
   window.location.href = "login.html";
 }
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
+
+
+init();
 </script>
 
 </body>
