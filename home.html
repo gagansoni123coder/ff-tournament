@@ -1,41 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Home</title>
-  <link rel="stylesheet" href="style.css">
+  <title>SoniX Esports</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
+
 </head>
 
 <body>
 
-<header>🔥 SoniX Esports DASHBOARD</header>
+<!-- 🔥 HEADER -->
+<div class="header">
+  <div>
+    <p class="welcome">Welcome Back,</p>
+    <h2 id="username">Loading...</h2>
+  </div>
 
-<div class="user-card">
-  <h2>Welcome Player 🎮</h2>
-  <p>Coins: <span id="coins">0</span></p>
+  <div class="wallet-box">
+    💰 <span id="coins">0</span>
+  </div>
 </div>
 
-<div class="grid">
+<!-- 📢 INFO BAR -->
+<div class="info">
+  📣 Important info — click here
+</div>
 
-  <div class="card" onclick="goTo('tournaments.html')">🏆<br>Tournaments</div>
-  <div class="card" onclick="goTo('battle.html')">⚔<br>1v1 Battle</div>
-  <div class="card" onclick="goTo('rewards.html')">🎁<br>Rewards</div>
-  <div class="card" onclick="goTo('wallet.html')">💰<br>Wallet</div>
-  <div class="card" onclick="goTo('history.html')">📜<br>History</div>
-  <div class="card" onclick="goTo('teams.html')">👥<br>Teams</div>
-  <div class="card" onclick="goTo('leaderboard.html')">📊<br>Leaderboard</div>
-  <div class="card" onclick="goTo('games.html')">🎮<br>Games</div>
-  <div class="card" onclick="goTo('notification.html')">🔔<br>Notifications</div>
-  <div class="card" onclick="goTo('profile.html')">👤<br>Profile</div>
+<!-- 🎮 GAME GRID -->
+<div class="games">
+
+  <img src="images/fullmap.jpg" onclick="goTo('fullmap.html')">
+  <img src="images/cs1v1.jpg" onclick="goTo('cs1v1.html')">
+  <img src="images/lw1v1.jpg" onclick="goTo('lw1v1.html')">
+
+  <img src="images/survival.jpg" onclick="goTo('survival.html')">
+  <img src="images/cs2v2.jpg" onclick="goTo('cs2v2.html')">
+  <img src="images/free.jpg" onclick="goTo('free.html')">
 
 </div>
 
-<script>
-function goTo(page){
-  window.location.href = page;
-}
-</script>
+<!-- 🎁 REFER -->
+<div class="refer">
+  <img src="images/refer.png">
+</div>
+
+<!-- 🔻 BOTTOM NAV -->
+<div class="bottom-nav">
+  <div onclick="goTo('earn.html')">💰<br>Earn</div>
+  <div onclick="goTo('games.html')">🎮<br>Play</div>
+  <div onclick="goTo('profile.html')">👤<br>Account</div>
+</div>
+
 
 <!-- ✅ SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -62,32 +81,29 @@ async function init(){
 }
 
 
-// 👤 LOAD USER DATA
+// 👤 LOAD USER
 async function loadUser(uid){
-  
+
   const { data, error } = await supabaseClient
     .from("users")
     .select("name, coins")
-    .eq("uid", uid);
+    .eq("uid", uid)
+    .maybeSingle();   // ✅ FIX (no 406 error)
 
   if(error){
     console.log(error);
     return;
   }
 
-  if(data && data.length > 0){
-    const userData = data[0];
+  document.getElementById("username").innerText =
+    data?.name || "Player";
 
-    document.querySelector(".user-card h2").innerText =
-      Welcome ${userData.name || "Player"} 🎮;
-
-    document.getElementById("coins").innerText =
-      userData.coins || 0;
-  }
+  document.getElementById("coins").innerText =
+    data?.coins || 0;
 }
 
 
-// 🔴 REALTIME COINS UPDATE
+// 🔴 REALTIME COINS
 function realtimeCoins(uid){
 
   supabaseClient
@@ -97,25 +113,28 @@ function realtimeCoins(uid){
       {
         event: "UPDATE",
         schema: "public",
-        table: "users",
-        filter: uid=eq.${uid}   // ✅ important
+        table: "users"
       },
       payload => {
 
-        document.getElementById("coins").innerText =
-          payload.new.coins;
+        if(payload.new.uid === uid){
+          document.getElementById("coins").innerText =
+            payload.new.coins;
+        }
 
       }
     )
     .subscribe();
 }
 
+
+// 🔗 NAVIGATION
+function goTo(page){
+  window.location.href = page;
+}
+
 init();
 </script>
-  <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
-</script>
+
 </body>
 </html>
