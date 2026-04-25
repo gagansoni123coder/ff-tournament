@@ -1,43 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Profile</title>
-  <link rel="stylesheet" href="profile.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<link rel="stylesheet" href="profile.css">
 </head>
 
 <body>
 
 <div class="container">
 
-  <!-- 👤 PROFILE CARD -->
+  <!-- 🔥 PROFILE CARD -->
   <div class="profile-card">
-    <h2 id="name">Loading...</h2>
-    <p>UID: <span id="uid">...</span></p>
-    <p>Email: <span id="email">...</span></p>
-    <p>Coins: <span id="coins">0</span></p>
+    <div class="avatar"></div>
+
+    <h2 id="name">Player</h2>
+    <p id="uid">UID: ---</p>
+    <p id="email">Email: ---</p>
+
+    <div class="coins-box">
+      💰 <span id="coins">0</span> Coins
+    </div>
   </div>
 
-  <!-- ⚙️ ACTION BUTTONS -->
-  <div class="actions">
+  <!-- 🎮 MENU BUTTONS -->
+  <div class="menu-grid">
 
-    <button onclick="goTo('wallet.html')">💰 Wallet</button>
-    <button onclick="goTo('history.html')">📜 History</button>
-    <button onclick="goTo('rewards.html')">🎁 Rewards</button>
-    <button onclick="goTo('support.html')">📞 Support</button>
-    <button onclick="goTo('terms.html')">📄 Terms</button>
-    
-    <button class="logout" onclick="logout()">🚪 Logout</button>
+    <div class="menu-btn" onclick="go('wallet.html')">
+      <img src="wallet.png">
+      <span>Wallet</span>
+    </div>
+
+    <div class="menu-btn" onclick="go('history.html')">
+      <img src="history.png">
+      <span>History</span>
+    </div>
+
+    <div class="menu-btn" onclick="go('rewards.html')">
+      <img src="reward.png">
+      <span>Rewards</span>
+    </div>
+
+    <div class="menu-btn" onclick="go('support.html')">
+      <img src="support.png">
+      <span>Support</span>
+    </div>
+
+    <div class="menu-btn" onclick="go('terms.html')">
+      <img src="terms.png">
+      <span>Terms</span>
+    </div>
+
+    <div class="menu-btn logout" onclick="logout()">
+      <img src="logout.png">
+      <span>Logout</span>
+    </div>
 
   </div>
+
+  <!-- 🔙 BACK BUTTON -->
+  <button class="back-btn" onclick="go('home.html')">← Back</button>
 
 </div>
 
-<!-- 🔙 BACK BUTTON -->
-<button class="back" onclick="goTo('home.html')">⬅ Back</button>
-
-
-<!-- ✅ SUPABASE -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
@@ -46,8 +73,8 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-// 🚀 INIT
-async function init(){
+// LOAD PROFILE
+async function loadProfile(){
 
   const { data } = await supabaseClient.auth.getSession();
   const user = data.session?.user;
@@ -57,76 +84,31 @@ async function init(){
     return;
   }
 
-  loadProfile(user.id);
-  realtimeCoins(user.id);
-}
+  document.getElementById("email").innerText = "Email: " + user.email;
+  document.getElementById("uid").innerText = "UID: " + user.id;
 
-
-// 👤 LOAD PROFILE
-async function loadProfile(uid){
-
-  document.getElementById("uid").innerText = uid;
-
-  const { data, error } = await supabaseClient
+  const { data: userData } = await supabaseClient
     .from("users")
     .select("*")
-    .eq("uid", uid)
-    .maybeSingle();   // ❗ FIX: no more 406 error
+    .eq("uid", user.id)
+    .single();
 
-  if(error){
-    console.log(error);
-    return;
+  if(userData){
+    document.getElementById("name").innerText = userData.name;
+    document.getElementById("coins").innerText = userData.coins;
   }
-
-  if(!data){
-    document.getElementById("name").innerText = "New Player";
-    document.getElementById("coins").innerText = 0;
-    return;
-  }
-
-  document.getElementById("name").innerText = data.name || "Player";
-  document.getElementById("coins").innerText = data.coins || 0;
 }
 
-
-// 🔴 REALTIME COINS
-function realtimeCoins(uid){
-
-  supabaseClient
-    .channel("profile-coins")
-    .on(
-      "postgres_changes",
-      {
-        event: "UPDATE",
-        schema: "public",
-        table: "users"
-      },
-      payload => {
-
-        if(payload.new.uid === uid){
-          document.getElementById("coins").innerText = payload.new.coins;
-        }
-
-      }
-    )
-    .subscribe();
-}
-
-
-// 🔁 NAVIGATION
-function goTo(page){
+function go(page){
   window.location.href = page;
 }
 
-
-// 🚪 LOGOUT
 async function logout(){
   await supabaseClient.auth.signOut();
   window.location.href = "login.html";
 }
 
-
-init();
+loadProfile();
 </script>
 
 </body>
