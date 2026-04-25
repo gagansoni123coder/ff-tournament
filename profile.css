@@ -12,87 +12,94 @@ body{
   border-radius:20px;
   background:linear-gradient(145deg,#0a0a0a,#111);
   border:2px solid red;
-  box-shadow:0 0 25px red;
-  text-align:center;
+  box-shadow:0 0 30px red;
 }
 
-.profile-card h2{
+/* TOP */
+.top-section{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+/* AVATAR */
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:2px solid red;
+  box-shadow:0 0 15px red;
+}
+
+/* INFO */
+.info h2{
   color:red;
-  margin-bottom:10px;
+  margin:0;
 }
 
-.profile-card p{
-  margin:6px 0;
+.info p{
+  margin:4px 0;
   color:#ccc;
 }
 
-/* 💰 COINS */
+/* COINS */
 .coins-box{
-  margin-top:15px;
-  padding:10px;
+  margin-top:10px;
+  padding:8px 12px;
   border-radius:10px;
   background:#111;
   border:1px solid red;
   display:inline-block;
   box-shadow:0 0 10px red;
+  font-weight:bold;
 }
 
-/* 🔥 MENU */
+/* MENU */
 .menu{
   padding:10px 20px;
 }
 
-/* 🔥 BUTTON */
+/* BUTTON */
 .menu-btn{
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  gap:15px;
   padding:15px;
   margin-bottom:12px;
   border-radius:15px;
-  background:#111;
+  background:#0d0d0d;
   border:1px solid #222;
   cursor:pointer;
   transition:0.3s;
 }
 
-.menu-btn:hover{
-  border:1px solid red;
-  box-shadow:0 0 10px red;
-  transform:scale(1.02);
+.menu-btn img{
+  width:50px;
 }
 
-/* LEFT */
-.menu-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.menu-left img{
-  width:40px;
-  height:40px;
-}
-
-/* TEXT */
-.menu-text h3{
+.menu-btn h3{
   margin:0;
-  font-size:16px;
 }
 
-.menu-text p{
+.menu-btn p{
   margin:0;
   font-size:12px;
-  color:#888;
+  color:#aaa;
 }
 
-/* ARROW */
-.arrow{
+.menu-btn span{
+  margin-left:auto;
   color:red;
   font-size:20px;
 }
 
-/* BACK BUTTON */
+.menu-btn:hover{
+  border:1px solid red;
+  box-shadow:0 0 15px red;
+  transform:scale(1.02);
+}
+
+/* BACK */
 .back{
   margin:20px;
   padding:12px;
@@ -101,9 +108,4 @@ body{
   border-radius:10px;
   color:white;
   font-size:16px;
-  cursor:pointer;
-}
-
-.back:hover{
-  box-shadow:0 0 10px red;
 }
