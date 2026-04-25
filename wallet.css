@@ -9,7 +9,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  padding: 20px;
+  padding: 15px;
 }
 
 /* Each Item */
@@ -24,7 +24,7 @@ body {
 
 /* Image */
 .menu-item img {
-  width: 100%;
+  width: 80%;
   height: 140px;
   object-fit: contain;
   display: block;
