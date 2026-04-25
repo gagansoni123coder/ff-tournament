@@ -29,6 +29,9 @@ const supabaseClient = window.supabase.createClient(
   "https://ggkqsfkxmmusrmczoyuk.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
+  function generateUID() {
+  return Math.floor(100000 + Math.random() * 900000); // 6 digit
+}
 
 const form = document.getElementById("registerForm");
 
@@ -52,24 +55,42 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // ✅ Step 2: Insert into table
-  const { error: insertError } = await supabaseClient
-    .from("users")
-    .insert([
-      {
-        name: name,
-        email: email,
-        phone: phone,
-        refer: refer,
-        user_id: authData.user.id
-      }
-    ]);
+  
 
-  if (insertError) {
-    alert("DB Error: " + insertError.message);
-    return;
+  // ✅ Step 2: Insert into table
+  const uid = generateUID();
+
+const { error: insertError } = await supabaseClient
+  .from("users")
+  .insert([
+    {
+      user_id: authData.user.id,
+      uid: uid,
+      name: name,
+      email: email,
+      phone: phone,
+      refer: refer
+    }
+  ]);
+  
+async function createUniqueUID() {
+  let uid;
+  let exists = true;
+
+  while (exists) {
+    uid = generateUID();
+
+    const { data } = await supabaseClient
+      .from("users")
+      .select("id")
+      .eq("uid", uid)
+      .maybeSingle();
+
+    if (!data) exists = false;
   }
 
+  return uid;
+}
   alert("Registered Successfully 🔥");
   window.location.href = "home.html";
 });
