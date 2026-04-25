@@ -1,87 +1,109 @@
-body {
-  margin: 0;
-  font-family: Arial;
-  background: black;
-  color: white;
-}
-
-.container {
-  padding: 15px;
+body{
+  margin:0;
+  background:#000;
+  font-family:Arial;
+  color:#fff;
 }
 
 /* 🔥 PROFILE CARD */
-.profile-card {
-  background: linear-gradient(145deg, #111, #1a1a1a);
-  border-radius: 20px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 0 20px red;
-  margin-bottom: 20px;
+.profile-card{
+  margin:20px;
+  padding:20px;
+  border-radius:20px;
+  background:linear-gradient(145deg,#0a0a0a,#111);
+  border:2px solid red;
+  box-shadow:0 0 25px red;
+  text-align:center;
 }
 
-.avatar {
-  width: 80px;
-  height: 80px;
-  background: url('avatar.png') center/cover;
-  border-radius: 50%;
-  margin: auto;
-  margin-bottom: 10px;
-  border: 2px solid red;
+.profile-card h2{
+  color:red;
+  margin-bottom:10px;
 }
 
-.profile-card h2 {
-  color: red;
-  margin: 5px 0;
+.profile-card p{
+  margin:6px 0;
+  color:#ccc;
 }
 
-.coins-box {
-  margin-top: 10px;
-  background: red;
-  padding: 8px;
-  border-radius: 10px;
-  font-weight: bold;
+/* 💰 COINS */
+.coins-box{
+  margin-top:15px;
+  padding:10px;
+  border-radius:10px;
+  background:#111;
+  border:1px solid red;
+  display:inline-block;
+  box-shadow:0 0 10px red;
 }
 
-/* 🎮 MENU GRID */
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+/* 🔥 MENU */
+.menu{
+  padding:10px 20px;
 }
 
-.menu-btn {
-  background: #111;
-  border-radius: 15px;
-  padding: 15px;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-  box-shadow: 0 0 10px #000;
+/* 🔥 BUTTON */
+.menu-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px;
+  margin-bottom:12px;
+  border-radius:15px;
+  background:#111;
+  border:1px solid #222;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-.menu-btn img {
-  width: 40px;
-  margin-bottom: 5px;
+.menu-btn:hover{
+  border:1px solid red;
+  box-shadow:0 0 10px red;
+  transform:scale(1.02);
 }
 
-.menu-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px red;
+/* LEFT */
+.menu-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
-.logout {
-  grid-column: span 2;
-  background: #200;
+.menu-left img{
+  width:40px;
+  height:40px;
 }
 
-/* 🔙 BACK BUTTON */
-.back-btn {
-  margin-top: 20px;
-  width: 100%;
-  padding: 12px;
-  border: none;
-  background: red;
-  color: white;
-  border-radius: 10px;
-  font-size: 16px;
+/* TEXT */
+.menu-text h3{
+  margin:0;
+  font-size:16px;
+}
+
+.menu-text p{
+  margin:0;
+  font-size:12px;
+  color:#888;
+}
+
+/* ARROW */
+.arrow{
+  color:red;
+  font-size:20px;
+}
+
+/* BACK BUTTON */
+.back{
+  margin:20px;
+  padding:12px;
+  background:red;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.back:hover{
+  box-shadow:0 0 10px red;
 }
