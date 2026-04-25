@@ -1,92 +1,81 @@
 body {
   margin: 0;
-  font-family: Arial;
-  background: linear-gradient(135deg, #0a001a, #1a0033);
-  color: white;
-  text-align: center;
+  background: #0b0f1a;
+  font-family: 'Orbitron', sans-serif;
 }
 
-/* TOP CARD /
-.top-card {
-  margin: 20px;
-  padding: 25px;
-  border-radius: 20px;
-  background: #120022;
-  box-shadow: 0 0 25px cyan;
-}
-
-.top-card h1 {
-  color: cyan;
-  text-shadow: 0 0 15px cyan;
-}
-
-grid {
+/* Menu Grid */
+.menu {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   padding: 20px;
 }
 
-/* BUTTON BASE /
-.card-btn {
-  background: #140028;
-  border: none;
-  border-radius: 18px;
-  padding: 22px 10px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+/* Each Item */
+.menu-item {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #1f2937;
   transition: 0.3s;
-
-  / glow /
-  box-shadow: 0 0 15px cyan;
 }
 
-/ ICON /
-.icon {
-  font-size: 28px;
-  margin-bottom: 8px;
+/* Image */
+.menu-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
 }
 
-/ HOVER /
-.card-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 25px cyan, 0 0 40px cyan;
+/* Overlay (glass + neon feel) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.7),
+    rgba(0,0,0,0.2)
+  );
+  transition: 0.3s;
 }
 
-/ CLICK EFFECT 🔥 /
-.card-btn:active {
-  transform: scale(0.95);
+/* Glow Colors (alag-alag buttons ke liye) */
+.menu-item:nth-child(1) {
+  border-color: #00ff66;
+  box-shadow: 0 0 10px #00ff66;
 }
 
-/ COLORS */
-.deposit {
-  box-shadow: 0 0 15px #00ffcc;
+.menu-item:nth-child(2) {
+  border-color: #a855f7;
+  box-shadow: 0 0 10px #a855f7;
 }
 
-.withdraw {
-  box-shadow: 0 0 15px #ff4d4d;
+.menu-item:nth-child(3) {
+  border-color: #00c3ff;
+  box-shadow: 0 0 10px #00c3ff;
 }
 
-.reward {
-  box-shadow: 0 0 15px gold;
+/* Hover Effects */
+.menu-item:hover {
+  transform: scale(1.05);
 }
 
-.stats {
-  box-shadow: 0 0 15px #00ccff;
+.menu-item:hover .overlay {
+  background: rgba(0,0,0,0.1);
 }
 
-/ TRANSACTION CARD */
-.card {
-  margin: 20px;
-  padding: 15px;
-  background: #120022;
-  border-radius: 15px;
-  box-shadow: 0 0 10px purple;
+/* Strong Glow on Hover */
+.menu-item:nth-child(1):hover {
+  box-shadow: 0 0 20px #00ff66;
+}
+
+.menu-item:nth-child(2):hover {
+  box-shadow: 0 0 20px #a855f7;
+}
+
+.menu-item:nth-child(3):hover {
+  box-shadow: 0 0 20px #00c3ff;
 }
