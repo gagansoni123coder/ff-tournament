@@ -1,59 +1,87 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #000;
+  background: black;
   color: white;
-  text-align: center;
 }
 
 .container {
-  padding: 20px;
+  padding: 15px;
 }
 
+/* 🔥 PROFILE CARD */
 .profile-card {
-  background: #111;
+  background: linear-gradient(145deg, #111, #1a1a1a);
+  border-radius: 20px;
   padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 10px #ff0000;
+  text-align: center;
+  box-shadow: 0 0 20px red;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: url('avatar.png') center/cover;
+  border-radius: 50%;
+  margin: auto;
+  margin-bottom: 10px;
+  border: 2px solid red;
 }
 
 .profile-card h2 {
-  color: #ff0000;
+  color: red;
+  margin: 5px 0;
 }
 
-.actions {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.actions button {
-  padding: 12px;
-  border: none;
+.coins-box {
+  margin-top: 10px;
+  background: red;
+  padding: 8px;
   border-radius: 10px;
-  background: #1a1a1a;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
+  font-weight: bold;
 }
 
-.actions button:hover {
-  background: #ff0000;
+/* 🎮 MENU GRID */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.menu-btn {
+  background: #111;
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 0 10px #000;
+}
+
+.menu-btn img {
+  width: 40px;
+  margin-bottom: 5px;
+}
+
+.menu-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px red;
 }
 
 .logout {
   grid-column: span 2;
-  background: red;
+  background: #200;
 }
 
-.back {
-  position: fixed;
-  bottom: 15px;
-  left: 15px;
-  padding: 10px 15px;
-  background: #ff0000;
+/* 🔙 BACK BUTTON */
+.back-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
   border: none;
-  border-radius: 10px;
+  background: red;
   color: white;
+  border-radius: 10px;
+  font-size: 16px;
 }
