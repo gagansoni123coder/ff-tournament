@@ -35,8 +35,8 @@ body {
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 10px;
+  gap: 12px;
+  padding: 8px;
 }
 
 /* 🔥 IMAGE BUTTON */
