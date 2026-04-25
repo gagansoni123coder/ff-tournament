@@ -49,15 +49,17 @@ body{
 
 .game-card {
   width: 100%;
-  height: 120px; /* 👈 size control */
+  height: 140px; /* 👈 size control */
   border-radius: 10px;
   overflow: hidden;
+  background:#000;
 }
 
 .game-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 👈 IMPORTANT */
+  object-fit: contain; /* 👈 IMPORTANT */
+  background:#000;
 }
 
 
