@@ -24,55 +24,19 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 const supabaseClient = window.supabase.createClient(
   "https://ggkqsfkxmmusrmczoyuk.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
-  function generateUID() {
-  return Math.floor(100000 + Math.random() * 900000); // 6 digit
+
+// 🔥 6 digit generator
+function generateUID() {
+  return Math.floor(100000 + Math.random() * 900000);
 }
 
-const form = document.getElementById("registerForm");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const password = document.getElementById("password").value;
-  const refer = document.getElementById("refer").value.trim();
-
-  // ✅ Step 1: Auth signup
-  const { data: authData, error: authError } = await supabaseClient.auth.signUp({
-    email: email,
-    password: password
-  });
-
-  if (authError) {
-    alert(authError.message);
-    return;
-  }
-
-  
-
-  // ✅ Step 2: Insert into table
-  const uid = generateUID();
-
-const { error: insertError } = await supabaseClient
-  .from("users")
-  .insert([
-    {
-      user_id: authData.user.id,
-      uid: uid,
-      name: name,
-      email: email,
-      phone: phone,
-      refer: refer
-    }
-  ]);
-  
+// 🔥 UNIQUE UID FUNCTION (BAHAR hona chahiye)
 async function createUniqueUID() {
   let uid;
   let exists = true;
@@ -91,6 +55,52 @@ async function createUniqueUID() {
 
   return uid;
 }
+
+// 👇 FORM
+const form = document.getElementById("registerForm");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const password = document.getElementById("password").value;
+  const refer = document.getElementById("refer").value.trim();
+
+  // ✅ Auth signup
+  const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  if (authError) {
+    alert(authError.message);
+    return;
+  }
+
+  // 🔥 YAHAN CHANGE (unique UID use kar)
+  const uid = await createUniqueUID();
+
+  // ✅ Insert
+  const { error: insertError } = await supabaseClient
+    .from("users")
+    .insert([
+      {
+        user_id: authData.user.id,
+        uid: uid,
+        name: name,
+        email: email,
+        phone: phone,
+        refer: refer
+      }
+    ]);
+
+  if (insertError) {
+    alert(insertError.message);
+    return;
+  }
+
   alert("Registered Successfully 🔥");
   window.location.href = "home.html";
 });
