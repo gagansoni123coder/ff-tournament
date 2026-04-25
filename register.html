@@ -53,7 +53,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   // ✅ Step 2: Insert into table
-  const { error: insertError } = await supabase
+  const { error: insertError } = await supabaseClient
     .from("users")
     .insert([
       {
