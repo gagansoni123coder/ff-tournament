@@ -49,9 +49,9 @@ body{
 }
 
 .games img{
-  width:100%;
-  Height:100%;
-  border-radius:10px;
+  width:70%;
+  Height:70%;
+  border-radius:8px;
   cursor:pointer;
   transition:0.3s;
 }
