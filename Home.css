@@ -49,7 +49,7 @@ body{
 
 .game-card {
   width: 100%;
-  height: 140px; /* 👈 size control */
+  height: 160px; /* 👈 size control */
   border-radius: 10px;
   overflow: hidden;
   background:#000;
