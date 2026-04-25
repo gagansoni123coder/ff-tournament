@@ -17,6 +17,7 @@ h2 {
   border-radius: 20px;
   box-shadow: 0 0 20px cyan;
   margin-top: 20px;
+  object-fit:contain;
 }
 
 /* QR /
