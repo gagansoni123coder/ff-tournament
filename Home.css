@@ -51,7 +51,7 @@ body{
 .games img{
   width:70%;
   Height:70%;
-  border-radius:8px;
+  border-radius:100px;
   cursor:pointer;
   transition:0.3s;
 }
