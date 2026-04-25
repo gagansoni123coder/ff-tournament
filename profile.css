@@ -1,65 +1,39 @@
 body{
-  margin:0;
   background:#000;
-  font-family:Arial;
-  color:#fff;
+  color:white;
+  font-family:sans-serif;
+  padding:15px;
 }
 
-/* 🔥 PROFILE CARD */
+/* PROFILE CARD */
 .profile-card{
-  margin:20px;
+  text-align:center;
   padding:20px;
   border-radius:20px;
-  background:linear-gradient(145deg,#0a0a0a,#111);
   border:2px solid red;
-  box-shadow:0 0 30px red;
+  box-shadow:0 0 20px red;
 }
 
-/* TOP */
-.top-section{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-/* AVATAR */
-.avatar{
-  width:90px;
-  height:90px;
+.profile-img{
+  width:100px;
   border-radius:50%;
-  border:2px solid red;
-  box-shadow:0 0 15px red;
+  border:3px solid red;
+  margin-bottom:10px;
 }
 
-/* INFO */
-.info h2{
-  color:red;
-  margin:0;
-}
-
-.info p{
-  margin:4px 0;
-  color:#ccc;
-}
-
-/* COINS */
 .coins-box{
   margin-top:10px;
-  padding:8px 12px;
+  padding:10px;
   border-radius:10px;
-  background:#111;
   border:1px solid red;
   display:inline-block;
-  box-shadow:0 0 10px red;
-  font-weight:bold;
 }
 
-/* MENU */
+/* MENU BUTTONS */
 .menu{
-  padding:10px 20px;
+  margin-top:20px;
 }
 
-/* BUTTON */
 .menu-btn{
   display:flex;
   align-items:center;
@@ -67,45 +41,30 @@ body{
   padding:15px;
   margin-bottom:12px;
   border-radius:15px;
-  background:#0d0d0d;
-  border:1px solid #222;
+  background:#111;
+  border:1px solid #333;
   cursor:pointer;
   transition:0.3s;
 }
 
+.menu-btn:hover{
+  border-color:red;
+  box-shadow:0 0 10px red;
+}
+
 .menu-btn img{
   width:50px;
+  height:50px;
 }
 
-.menu-btn h3{
-  margin:0;
-}
-
-.menu-btn p{
-  margin:0;
-  font-size:12px;
-  color:#aaa;
-}
-
-.menu-btn span{
-  margin-left:auto;
-  color:red;
-  font-size:20px;
-}
-
-.menu-btn:hover{
-  border:1px solid red;
-  box-shadow:0 0 15px red;
-  transform:scale(1.02);
-}
-
-/* BACK */
-.back{
-  margin:20px;
-  padding:12px;
+/* BACK BUTTON */
+.back-btn{
+  margin-top:20px;
+  width:100%;
+  padding:15px;
   background:red;
   border:none;
-  border-radius:10px;
+  border-radius:15px;
   color:white;
-  font-size:16px;
+  font-size:18px;
 }
