@@ -8,8 +8,8 @@ body {
 .menu {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 30px;
+  gap: 15px;
+  padding: 20px;
 }
 
 /* Each Item */
