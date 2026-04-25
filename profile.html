@@ -11,84 +11,80 @@
 
 <body>
 
-<!-- 🔥 PROFILE -->
+<!-- 🔥 PROFILE CARD -->
 <div class="profile-card">
-  <h2 id="name">Loading...</h2>
-  <p>UID: <span id="uid"></span></p>
-  <p>Email: <span id="email"></span></p>
 
-  <div class="coins-box">
-    💰 Coins: <span id="coins">0</span>
+  <div class="top-section">
+    <img src="avatar.png" class="avatar">
+
+    <div class="info">
+      <h2 id="name">Loading...</h2>
+      <p>UID: <span id="uid"></span></p>
+      <p>Email: <span id="email"></span></p>
+
+      <div class="coins-box">
+        💰 <span id="coins">0</span> Coins
+      </div>
+    </div>
   </div>
+
 </div>
 
 <!-- 🔥 MENU -->
 <div class="menu">
 
   <div class="menu-btn" onclick="go('wallet.html')">
-    <div class="menu-left">
-      <img src="wallet.png">
-      <div class="menu-text">
-        <h3>Wallet</h3>
-        <p>Balance & transactions</p>
-      </div>
+    <img src="wallet.png">
+    <div>
+      <h3>Wallet</h3>
+      <p>Check your balance & transactions</p>
     </div>
-    <div class="arrow">›</div>
+    <span>›</span>
   </div>
 
   <div class="menu-btn" onclick="go('history.html')">
-    <div class="menu-left">
-      <img src="history.png">
-      <div class="menu-text">
-        <h3>History</h3>
-        <p>Match & transaction history</p>
-      </div>
+    <img src="history.png">
+    <div>
+      <h3>History</h3>
+      <p>View your match history</p>
     </div>
-    <div class="arrow">›</div>
+    <span>›</span>
   </div>
 
   <div class="menu-btn" onclick="go('rewards.html')">
-    <div class="menu-left">
-      <img src="rewards.png">
-      <div class="menu-text">
-        <h3>Rewards</h3>
-        <p>Claim bonuses</p>
-      </div>
+    <img src="rewards.png">
+    <div>
+      <h3>Rewards</h3>
+      <p>Claim your rewards & bonuses</p>
     </div>
-    <div class="arrow">›</div>
+    <span>›</span>
   </div>
 
   <div class="menu-btn" onclick="go('support.html')">
-    <div class="menu-left">
-      <img src="support.png">
-      <div class="menu-text">
-        <h3>Support</h3>
-        <p>Help & contact</p>
-      </div>
+    <img src="support.png">
+    <div>
+      <h3>Support</h3>
+      <p>Get help & support</p>
     </div>
-    <div class="arrow">›</div>
+    <span>›</span>
   </div>
 
   <div class="menu-btn" onclick="go('terms.html')">
-    <div class="menu-left">
-      <img src="terms.png">
-      <div class="menu-text">
-        <h3>Terms</h3>
-        <p>Rules & conditions</p>
-      </div>
+    <img src="terms.png">
+    <div>
+      <h3>Terms</h3>
+      <p>Read our terms & conditions</p>
     </div>
-    <div class="arrow">›</div>
+    <span>›</span>
   </div>
 
   <div class="menu-btn" onclick="logout()">
-    <div class="menu-left">
-      <img src="logout.png">
-      <div class="menu-text">
-        <h3>Logout</h3>
-        <p>Sign out</p>
-      </div>
+    <img src="logout.png">
+    <div>
+      <h3>Logout</h3>
+      <p>Logout from your account</p>
     </div>
-    <div class="arrow">›</div>
+    <span>›</span>
   </div>
 
 </div>
@@ -104,6 +100,7 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
+// LOAD PROFILE
 async function loadProfile(){
   const { data:{user} } = await supabaseClient.auth.getUser();
 
