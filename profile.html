@@ -3,68 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile</title>
+
+<title>Profile - SoniX Esports</title>
+
 <link rel="stylesheet" href="profile.css">
 </head>
 
 <body>
 
-<div class="container">
+<!-- 🔥 PROFILE -->
+<div class="profile-card">
+  <h2 id="name">Loading...</h2>
+  <p>UID: <span id="uid"></span></p>
+  <p>Email: <span id="email"></span></p>
 
-  <!-- 🔥 PROFILE CARD -->
-  <div class="profile-card">
-    <div class="avatar"></div>
-
-    <h2 id="name">Player</h2>
-    <p id="uid">UID: ---</p>
-    <p id="email">Email: ---</p>
-
-    <div class="coins-box">
-      💰 <span id="coins">0</span> Coins
-    </div>
+  <div class="coins-box">
+    💰 Coins: <span id="coins">0</span>
   </div>
+</div>
 
-  <!-- 🎮 MENU BUTTONS -->
-  <div class="menu-grid">
+<!-- 🔥 MENU -->
+<div class="menu">
 
-    <div class="menu-btn" onclick="go('wallet.html')">
+  <div class="menu-btn" onclick="go('wallet.html')">
+    <div class="menu-left">
       <img src="wallet.png">
-      <span>Wallet</span>
+      <div class="menu-text">
+        <h3>Wallet</h3>
+        <p>Balance & transactions</p>
+      </div>
     </div>
-
-    <div class="menu-btn" onclick="go('history.html')">
-      <img src="history.png">
-      <span>History</span>
-    </div>
-
-    <div class="menu-btn" onclick="go('rewards.html')">
-      <img src="reward.png">
-      <span>Rewards</span>
-    </div>
-
-    <div class="menu-btn" onclick="go('support.html')">
-      <img src="support.png">
-      <span>Support</span>
-    </div>
-
-    <div class="menu-btn" onclick="go('terms.html')">
-      <img src="terms.png">
-      <span>Terms</span>
-    </div>
-
-    <div class="menu-btn logout" onclick="logout()">
-      <img src="logout.png">
-      <span>Logout</span>
-    </div>
-
+    <div class="arrow">›</div>
   </div>
 
-  <!-- 🔙 BACK BUTTON -->
-  <button class="back-btn" onclick="go('home.html')">← Back</button>
+  <div class="menu-btn" onclick="go('history.html')">
+    <div class="menu-left">
+      <img src="history.png">
+      <div class="menu-text">
+        <h3>History</h3>
+        <p>Match & transaction history</p>
+      </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="menu-btn" onclick="go('rewards.html')">
+    <div class="menu-left">
+      <img src="rewards.png">
+      <div class="menu-text">
+        <h3>Rewards</h3>
+        <p>Claim bonuses</p>
+      </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="menu-btn" onclick="go('support.html')">
+    <div class="menu-left">
+      <img src="support.png">
+      <div class="menu-text">
+        <h3>Support</h3>
+        <p>Help & contact</p>
+      </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="menu-btn" onclick="go('terms.html')">
+    <div class="menu-left">
+      <img src="terms.png">
+      <div class="menu-text">
+        <h3>Terms</h3>
+        <p>Rules & conditions</p>
+      </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="menu-btn" onclick="logout()">
+    <div class="menu-left">
+      <img src="logout.png">
+      <div class="menu-text">
+        <h3>Logout</h3>
+        <p>Sign out</p>
+      </div>
+    </div>
+    <div class="arrow">›</div>
+  </div>
 
 </div>
 
-<!-- SUPABASE -->
+<button class="back" onclick="history.back()">← Back</button>
+
+<!-- 🔥 SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
@@ -73,29 +104,26 @@ const supabaseClient = supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdna3FzZmt4bW11c3JtY3pveXVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjg2NDIsImV4cCI6MjA5MDg0NDY0Mn0.p5Y2FFlNsFweZ2yc290eRs92mVKJTLnEU2C2y-qZZBI"
 );
 
-// LOAD PROFILE
 async function loadProfile(){
-
-  const { data } = await supabaseClient.auth.getSession();
-  const user = data.session?.user;
+  const { data:{user} } = await supabaseClient.auth.getUser();
 
   if(!user){
     window.location.href = "login.html";
     return;
   }
 
-  document.getElementById("email").innerText = "Email: " + user.email;
-  document.getElementById("uid").innerText = "UID: " + user.id;
+  document.getElementById("uid").innerText = user.id;
+  document.getElementById("email").innerText = user.email;
 
-  const { data: userData } = await supabaseClient
+  const { data } = await supabaseClient
     .from("users")
     .select("*")
     .eq("uid", user.id)
     .single();
 
-  if(userData){
-    document.getElementById("name").innerText = userData.name;
-    document.getElementById("coins").innerText = userData.coins;
+  if(data){
+    document.getElementById("name").innerText = data.name;
+    document.getElementById("coins").innerText = data.coins;
   }
 }
 
@@ -105,7 +133,7 @@ function go(page){
 
 async function logout(){
   await supabaseClient.auth.signOut();
-  window.location.href = "login.html";
+  window.location.href="login.html";
 }
 
 loadProfile();
